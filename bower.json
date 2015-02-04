@@ -1,0 +1,19 @@
+{
+  "name": "rtm-sudoku",
+  "version": "1.0.0",
+  "main": "app/index.html",
+  "ignore": [
+    ".jshintrc",
+    "**/*.md",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.1",
+    "jquery": "~2.1.1",
+    "less": "~2.0.0",
+    "requirejs": "~2.1.15"
+  },
+  "devDependencies": {
+    "jasmine": "~2.1.3"
+  }
+}

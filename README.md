@@ -1,4 +1,3 @@
-sudoku
-======
+# sudoku #
 
 sudoku

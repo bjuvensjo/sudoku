@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- <html manifest="sudoku.appcache" lang="en"> -->
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-iphone4.png" /> -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="img/sudoku-apple-touch-icon.png" />
+
+    <link rel="stylesheet/less" type="text/css" href="less/app.less" />
+    <script src="components/less/dist/less.js" type="text/javascript"></script>
+    
+    <!--  <link rel="apple-touch-startup-image" href="img/iphone4-splash.png" /> -->
+    <title>sudoku</title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+	<div id="sudoku">
+
+          <nav class="navbar navbar-default">
+            <span class="navbar-brand">Sudoku</span>
+	    <span class="navbar-right"> 
+	      <span id="errors"></span>
+	      <span id="clock"></span>
+	      <a id="help" class="btn btn-success navbar-btn" href="#">Help</a>
+	      <a id="new" class="btn btn-warning navbar-btn" href="#">New</a>
+	    </span>                  
+          </nav>
+          <div id="loader"></div>
+          
+	</div>
+      </div>
+    </div>
+
+    <script data-main="src/main" src="components/requirejs/require.js"></script>    
+  </body>
+</html>
