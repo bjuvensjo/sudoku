@@ -227,7 +227,7 @@ module.exports = (function () {
                     $('#loader').show();
                     if (createNew) {
                         if (typeof (Worker) !== "undefined") {
-                            var worker = new Worker('initializeWorker.js');
+                            var worker = new Worker('initializeWorker.min.js');
                             // receive messages from web worker
                             worker.onmessage = function (e) {
                                 that.model.cells = e.data.cells;

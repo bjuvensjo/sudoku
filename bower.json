@@ -7,13 +7,7 @@
         "**/*.md",
         "**/*.txt"
     ],
-    "dependencies": {
-        "jquery": "~2.1.1"
-    },
     "devDependencies": {
-        "less": "~2.0.0",
-        "jasmine": "~2.1.3",
-        "bootstrap": "~3.3.1",
         "bootstrap-sass": "~3.3.3"
     }
 }

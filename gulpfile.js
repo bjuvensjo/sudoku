@@ -5,22 +5,22 @@ var gulp = require('gulp');
 var manifest = require('gulp-manifest');
 var minifyCSS = require('gulp-minify-css');
 var mocha = require('gulp-mocha');
-var path = require('path');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
+var watch = require('gulp-watch');
 var webserver = require('gulp-webserver');
 
 gulp.task('build', function() {  
-    gulp.src(['app/src/app.js'])
+    gulp.src(['app/js/app.js'])
         .pipe(browserify())
-        .pipe(gulp.dest('build')) // This will output the non minified version
+//        .pipe(gulp.dest('build')) // This will output the non minified version
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest('build')); // This will output the minified version
 
-    gulp.src(['app/src/initializeWorker.js'])
+    gulp.src(['app/js/initializeWorker.js'])
         .pipe(browserify())
-        .pipe(gulp.dest('build')) // This will output the non minified version
+//        .pipe(gulp.dest('build')) // This will output the non minified version
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest('build')); // This will output the minified version
@@ -32,11 +32,17 @@ gulp.task('build', function() {
             sass: './app/sass/sass',
             import_path: ['./bower_components/bootstrap-sass/assets/stylesheets']
         }))
-        .pipe(gulp.dest('build')) // This will output the non minified version    
+//        .pipe(gulp.dest('build')) // This will output the non minified version    
         .pipe(minifyCSS())
         .pipe(rename({ extname: '.min.css' }))
-        .pipe(gulp.dest('build')); // This will output the minified version    
+        .pipe(gulp.dest('build')); // This will output the minified version
 
+    gulp.src(['app/img/*', 'app/favicon.ico'], {base: "app"})
+        .pipe(gulp.dest('build'));
+
+    gulp.src(['app/index.html'], {base: "app"})
+        .pipe(gulp.dest('build'));
+    
     gulp.src(['build/**/*'])
         .pipe(manifest({
             hash: true,
@@ -48,8 +54,14 @@ gulp.task('build', function() {
         .pipe(gulp.dest('build'));    
 });
 
-gulp.task('default', function() {
-    // gulp.src('app')
+// gulp.task('watch', function() {
+//     console.log('#######');
+//     gulp.src('app/**/*.js')
+//         .pipe(watch('app/**/*.js'));
+// });
+
+// gulp.task('default', ['watch'], function() {
+gulp.task('default', ['build'], function() {
     gulp.src('build')
         .pipe(webserver({
             livereload: true,
@@ -60,12 +72,12 @@ gulp.task('default', function() {
 gulp.task('test', function () {
     gulp.run('test-single');
     
-    gulp.watch('app/src/**', function(event) {
+    gulp.watch('app/js/**', function(event) {
         gulp.run('test-single');
     });
 });
 
 gulp.task('test-single', function () {
-    return gulp.src('app/src/**/*Test.js', {read: false})
+    return gulp.src('app/js/**/*Test.js', {read: false})
         .pipe(mocha({reporter: 'spec'}));
 });
