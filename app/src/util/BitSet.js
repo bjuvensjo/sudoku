@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var BitSet = null;
     BitSet = function (values) {
         // values could be a BitSet or an Array
@@ -98,4 +98,5 @@ define(function (require) {
         return oldValue === this.value ? 0 : 1;
     };
     return BitSet;
-});
+}());
+

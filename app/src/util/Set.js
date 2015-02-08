@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var Set = null;
     Set = function (values) {
         // values could be a Set or an Array
@@ -105,4 +105,4 @@ define(function (require) {
         return this.values;
     };
     return Set;
-});
+}());

@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var Persistence = null, get, put;
     Persistence = function () {
         if (!(this instanceof Persistence)) {
@@ -49,4 +49,4 @@ define(function (require) {
         put(key, value);
     };
     return Persistence;
-});
+}());

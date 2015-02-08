@@ -1,7 +1,7 @@
-define(function (require) {
-    var combinationUtil = require('util/combination');
-    var indexUtil = require('util/index');
-    var Set = require('util/BitSet');
+module.exports = (function () {
+    var combinationUtil = require('../../util/combination');
+    var indexUtil = require('../../util/index');
+    var Set = require('../../util/BitSet');
     
     var PartnershipStrategy = null;
 
@@ -128,4 +128,4 @@ define(function (require) {
         return updated;
     };
     return new PartnershipStrategy();
-});
+}());

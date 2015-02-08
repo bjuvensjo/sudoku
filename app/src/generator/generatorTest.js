@@ -1,19 +1,19 @@
-define([ 'generator/generator', 'util/validation' ], function (generator, validation) {
+var expect = require('expect.js');
+var generator = require('./generator');
+var validation = require('../util/validation');
 
-    describe("generator", function () {
+describe("generator", function () {
 
-        it("generate() should be valid", function () {
-            var actual, cells, expected;
+    it("generate() should be valid", function () {
+        var actual, cells, expected;
 
-            // expect(notes.getValues([0])).toEqual([null]);
-            expect(generator.generate).toBeDefined();
+        expect(generator.generate).to.not.be(undefined);     
 
-            // Test generate
-            cells = generator.generate();
-            actual = validation.isAllValid(cells);
-            expected = true;
-            expect(actual).toBe(expected);
-        });
-
+        // Test generate
+        cells = generator.generate();
+        actual = validation.isAllValid(cells);
+        expected = true;
+        expect(actual).to.be(expected);
     });
+
 });

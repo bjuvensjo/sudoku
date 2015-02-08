@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var Index = null;
     Index = function () {
         if (!(this instanceof Index)) {
@@ -34,4 +34,4 @@ define(function (require) {
         return indexes;
     };
     return new Index();
-});
+}());

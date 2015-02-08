@@ -1,5 +1,5 @@
-define(function (require) {
-    var indexUtil = require('util/index');
+module.exports = (function () {
+    var indexUtil = require('../../util/index');
     
     var CompellingStrategy = null;
     CompellingStrategy = function () {
@@ -41,4 +41,4 @@ define(function (require) {
         return updated;
     };
     return new CompellingStrategy();
-});
+}());

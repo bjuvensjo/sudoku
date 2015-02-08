@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var hasDuplicate, Validation = null;
     var indexUtil = require('./index');
     
@@ -34,8 +34,8 @@ define(function (require) {
         indexes = [ 0, 12, 24, 28, 40, 52, 56, 68, 80 ];
         for (index = 0; index < indexes.length; index++) {
             if (hasDuplicate(cells, indexUtil.getBoxIndexes(indexes[index]))
-                    || hasDuplicate(cells, indexUtil.getColumnIndexes(indexes[index]))
-                    || hasDuplicate(cells, indexUtil.getRowIndexes(indexes[index]))) {
+                || hasDuplicate(cells, indexUtil.getColumnIndexes(indexes[index]))
+                || hasDuplicate(cells, indexUtil.getRowIndexes(indexes[index]))) {
                 return false;
             }
         }
@@ -43,7 +43,7 @@ define(function (require) {
     };
     Validation.prototype.isValid = function (cells, index) {
         return !(cells[index] === 0 || hasDuplicate(cells, indexUtil.getBoxIndexes(index))
-                || hasDuplicate(cells, indexUtil.getColumnIndexes(index)) || hasDuplicate(cells, indexUtil.getRowIndexes(index)));
+                 || hasDuplicate(cells, indexUtil.getColumnIndexes(index)) || hasDuplicate(cells, indexUtil.getRowIndexes(index)));
     };
     return new Validation();
-});
+}());

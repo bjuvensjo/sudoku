@@ -1,4 +1,4 @@
-require(function(require) {
+module.exports = (function () {
     var Solver = require('solver/Solver');
     var compellingStrategy = require(solver/strategy/compellingStrategy);
     var completeStrategy = require('solver/strategy/completeStrategy');
@@ -83,5 +83,6 @@ require(function(require) {
     }
     console.log(s);
     console.log('time: ' + time + ' ms.');
-    
+
+    return;
 });

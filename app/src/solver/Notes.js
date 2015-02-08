@@ -1,6 +1,6 @@
-define(function (require) {
-    var indexUtil = require('util/index');
-    var Set = require('util/BitSet');
+module.exports = (function () {
+    var indexUtil = require('../util/index');
+    var Set = require('../util/BitSet');
     
     var Notes = null;
     Notes = function (cells) {
@@ -60,7 +60,7 @@ define(function (require) {
         }
         this.values[changedIndex] = null;
         indexes = indexUtil.getBoxIndexes(changedIndex).concat(indexUtil.getColumnIndexes(changedIndex),
-                indexUtil.getRowIndexes(changedIndex));
+                                                               indexUtil.getRowIndexes(changedIndex));
         for (i = 0; i < indexes.length; i++) {
             index = indexes[i];
             if (this.values[index]) {
@@ -69,4 +69,4 @@ define(function (require) {
         }
     };
     return Notes;
-});
+}());

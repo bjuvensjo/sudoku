@@ -1,6 +1,11 @@
-define([ 'util/index', 'util/validation', 'solver/Solver', 'solver/strategy/compellingStrategy',
-        'solver/strategy/completeStrategy', 'solver/strategy/partnershipStrategy' ], function (indexUtil, validation, Solver,
-        compellingStrategy, completeStrategy, partnershipStrategy) {
+module.exports = (function () {
+    var indexUtil = require('../util/index');
+    var validation = require('../util/validation');
+    var Solver = require('../solver/Solver');
+    var compellingStrategy = require('../solver/strategy/compellingStrategy');
+    var completeStrategy = require('../solver/strategy/completeStrategy');
+    var partnershipStrategy = require('../solver/strategy/partnershipStrategy');
+
     var Generator = null, getRandomizedRange;
     getRandomizedRange = function (start, end) {
         var randomizedRange, range, i;
@@ -20,6 +25,7 @@ define([ 'util/index', 'util/validation', 'solver/Solver', 'solver/strategy/comp
         if (!(this instanceof Generator)) {
             return new Generator();
         }
+        return this;
     };
     Generator.prototype.generate = function () {
         var cells, generateCell;
@@ -56,4 +62,4 @@ define([ 'util/index', 'util/validation', 'solver/Solver', 'solver/strategy/comp
         return sudoku;
     };
     return new Generator();
-});
+}());

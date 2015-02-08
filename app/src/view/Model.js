@@ -1,9 +1,10 @@
-define(function (require) {
-    var generator = require('generator/generator');
-    var indexUtil = require('util/index');
-    var Notes = require('solver/Notes');
-    var Set = require('util/BitSet');
-    var Persistence = require('util/Persistence');
+module.exports = (function () {
+    var generator = require('../generator/generator');
+    var indexUtil = require('../util/index');
+    var Notes = require('../solver/Notes');
+    var Set = require('../util/BitSet');
+    var Persistence = require('../util/Persistence');
+    
     var Model = null;
     // TODO Use Notes class!!!
     Model = function () {
@@ -117,4 +118,4 @@ define(function (require) {
         }
     };
     return Model;
-});
+}());

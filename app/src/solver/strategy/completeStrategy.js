@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var CompleteStrategy = null;
     CompleteStrategy = function () {
         if (!(this instanceof CompleteStrategy)) {
@@ -22,4 +22,4 @@ define(function (require) {
         return updated;
     };
     return new CompleteStrategy();
-});
+}());

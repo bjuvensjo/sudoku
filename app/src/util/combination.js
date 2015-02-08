@@ -1,4 +1,4 @@
-define(function (require) {
+module.exports = (function () {
     var Combination = null;
     Combination = function () {
         if (!(this instanceof Combination)) {
@@ -29,4 +29,4 @@ define(function (require) {
         return result;
     };
     return new Combination();
-});
+}());

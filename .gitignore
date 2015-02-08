@@ -1,6 +1,10 @@
-.DS_Store
-.tern*
-.idea
 *.iml
+.DS_Store
+.idea
+.sass-cache
+.tern*
+bower_components
+build
 node_modules
-app/components
+npm-debug.log
+stylesheets

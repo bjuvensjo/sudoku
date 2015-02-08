@@ -1,5 +1,4 @@
-define(function (require) {
-
+module.exports = (function () {
     var $ = require('jquery'); 
     var Clock = require('./Clock');
     var Model = require('./Model');
@@ -228,7 +227,7 @@ define(function (require) {
                     $('#loader').show();
                     if (createNew) {
                         if (typeof (Worker) !== "undefined") {
-                            var worker = new Worker('src/initializeWorker.js');
+                            var worker = new Worker('initializeWorker.js');
                             // receive messages from web worker
                             worker.onmessage = function (e) {
                                 that.model.cells = e.data.cells;
@@ -264,7 +263,7 @@ define(function (require) {
                     $.error('Method ' + method + ' does not exist on jQuery.sudoku');
                 }
             };
-        })(jQuery);
+        })($);
         $(function () {
             var $sudoku = $('#sudoku');
             $sudoku.sudoku();
@@ -281,4 +280,4 @@ define(function (require) {
         });
     };
     return View;
-});
+}());

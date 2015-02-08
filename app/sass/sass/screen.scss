@@ -1,8 +1,18 @@
-@import "bootstrap/bootstrap.less";
-@import "bootstrap/variables.less";
+/*! FILE: sass/screen.scss */
+
+//Let's add that reset back in now, 'cos it's helpful...
+@import "compass/reset";
+@import "compass";
+
+@import "bootstrap-compass";
+@import 'bootstrap';
+
+/* @import "bootstrap/bootstrap.less"; */
+/* @import "bootstrap/variables.less"; */
 
 body {
-    background-color: @gray-light;
+    /* background-color: @gray-light; */
+    background-color: gray;
 }
 
 #loader {
@@ -89,13 +99,13 @@ td {
     border: solid thin black;
 }
 .navbar .notes-toggle {
-    .btn-warning
+    @extend .btn-warning;
 }
 .navbar .selected-number {
-    .btn-info
+   @extend .btn-info;
 }
 .square {
-    .btn-default;
+    @extend .btn-default;
     display: table-cell;
     border-radius: 0;
     font-size: 1em;
@@ -110,7 +120,7 @@ td {
     line-height: 0.9em;
 }
 .error {
-    .btn-danger;
+    @extend .btn-danger;
 }
 #new {
     margin-left: 0px;

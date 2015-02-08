@@ -1,7 +1,7 @@
-define(function (require) {
-    var validation = require('util/validation');
+module.exports = (function () {    
+    var validation = require('../util/validation');
     var Notes = require('./Notes');
-    
+
     var Solver = null;
     Solver = function (strategies) {
         if (!(this instanceof Solver)) {
@@ -30,4 +30,4 @@ define(function (require) {
         };
     };
     return Solver;
-});
+}());

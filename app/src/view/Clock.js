@@ -1,5 +1,6 @@
-define(function (require) {
-    var Persistence = require('util/Persistence');
+module.exports = (function () {    
+    var Persistence = require('../util/Persistence');
+    
     var Clock = null;
     Clock = function () {
         if (!(this instanceof Clock)) {
@@ -61,4 +62,4 @@ define(function (require) {
         }
     };
     return Clock;
-});
+}());
