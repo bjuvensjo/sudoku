@@ -10,48 +10,10 @@ var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 var webserver = require('gulp-webserver');
 
-gulp.task('build', function() {  
-    gulp.src(['app/js/app.js'])
-        .pipe(browserify())
-//        .pipe(gulp.dest('build')) // This will output the non minified version
-        .pipe(uglify())
-        .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest('build')); // This will output the minified version
+var dest = 'build';
 
-    gulp.src(['app/js/initializeWorker.js'])
-        .pipe(browserify())
-//        .pipe(gulp.dest('build')) // This will output the non minified version
-        .pipe(uglify())
-        .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest('build')); // This will output the minified version
-
-    gulp.src('./app/sass/sass/*.scss')
-        .pipe(compass({
-            config_file: './app/sass/config.rb',
-            css: './app/sass/stylesheets',
-            sass: './app/sass/sass',
-            import_path: ['./bower_components/bootstrap-sass/assets/stylesheets']
-        }))
-//        .pipe(gulp.dest('build')) // This will output the non minified version    
-        .pipe(minifyCSS())
-        .pipe(rename({ extname: '.min.css' }))
-        .pipe(gulp.dest('build')); // This will output the minified version
-
-    gulp.src(['app/img/*', 'app/favicon.ico'], {base: "app"})
-        .pipe(gulp.dest('build'));
-
-    gulp.src(['app/index.html'], {base: "app"})
-        .pipe(gulp.dest('build'));
-    
-    gulp.src(['build/**/*'])
-        .pipe(manifest({
-            hash: true,
-            preferOnline: true,
-            network: ['http://*', 'https://*', '*'],
-            filename: 'app.manifest',
-            exclude: 'app.manifest'
-        }))
-        .pipe(gulp.dest('build'));    
+gulp.task('build', function() {
+    gulp.run('manifest');
 });
 
 // gulp.task('watch', function() {
@@ -62,11 +24,60 @@ gulp.task('build', function() {
 
 // gulp.task('default', ['watch'], function() {
 gulp.task('default', ['build'], function() {
-    gulp.src('build')
+    return gulp.src(dest)
         .pipe(webserver({
             livereload: true,
             open: 'index.html'
         }));
+});
+
+gulp.task('js', function() {
+    return gulp.src(['app/js/app.js'])
+        .pipe(browserify())
+    //        .pipe(gulp.dest('build')) // This will output the non minified version
+        .pipe(uglify())
+        .pipe(rename({ extname: '.min.js' }))
+        .pipe(gulp.dest(dest)); // This will output the minified version
+});
+
+gulp.task('js-worker', function() {
+    return gulp.src(['app/js/initializeWorker.js'])
+        .pipe(browserify())
+    //        .pipe(gulp.dest(dest)) // This will output the non minified version
+        .pipe(uglify())
+        .pipe(rename({ extname: '.min.js' }))
+        .pipe(gulp.dest(dest)); // This will output the minified version    
+});
+
+gulp.task('manifest', ['js', 'js-worker', 'resources', 'sass'], function() {
+    return gulp.src(['build/**/*'])
+        .pipe(manifest({
+            hash: true,
+            preferOnline: true,
+            network: ['http://*', 'https://*', '*'],
+            filename: 'app.manifest',
+            exclude: 'app.manifest'
+        }))
+        .pipe(gulp.dest(dest));    
+});
+
+gulp.task('resources', function() {
+    return gulp.src(['app/img/*', 'app/favicon.ico', 'app/index.html'], {base: "app"})
+        .pipe(gulp.dest(dest));
+});
+
+gulp.task('sass', function() {
+    return gulp.src('./app/sass/sass/*.scss')
+        .pipe(compass({
+            config_file: './app/sass/config.rb',
+            css: './app/sass/stylesheets',
+            sass: './app/sass/sass',
+            import_path: ['./bower_components/bootstrap-sass/assets/stylesheets']
+        }))
+    //        .pipe(gulp.dest(dest)) // This will output the non minified version    
+        .pipe(minifyCSS())
+        .pipe(rename({ extname: '.min.css' }))
+        .pipe(gulp.dest(dest)); // This will output the minified version
 });
 
 gulp.task('test', function () {
