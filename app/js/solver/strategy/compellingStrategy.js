@@ -1,14 +1,9 @@
 module.exports = (function () {
     var indexUtil = require('../../util/index');
+
+    var apply;
     
-    var CompellingStrategy = null;
-    CompellingStrategy = function () {
-        if (!(this instanceof CompellingStrategy)) {
-            return new CompellingStrategy();
-        }
-        return this;
-    };
-    CompellingStrategy.prototype.apply = function (cells, notes) {
+    apply = function (cells, notes) {
         var cellNotes, i, isNoteUnique, j, notesValue, updated;
         updated = [];
         isNoteUnique = function (note, index, indexes, notes) {
@@ -40,5 +35,8 @@ module.exports = (function () {
         }
         return updated;
     };
-    return new CompellingStrategy();
+
+    return {
+        apply: apply
+    };
 }());

@@ -1,5 +1,6 @@
 module.exports = (function () {
     var BitSet = null;
+
     BitSet = function (values) {
         // values could be a BitSet or an Array
         if (!(this instanceof BitSet)) {
@@ -15,9 +16,11 @@ module.exports = (function () {
         }
         return this;
     };
+
     BitSet.prototype.add = function (value) {
         this.value |= 1 << value;
     };
+
     BitSet.prototype.addAll = function (values) {
         // values could be a BitSet or an Array
         var i;
@@ -29,6 +32,7 @@ module.exports = (function () {
             this.value |= values.getValue();
         }
     };
+
     BitSet.prototype.asArray = function () {
         var i, theArray, x;
         i = 0;
@@ -43,12 +47,15 @@ module.exports = (function () {
         }
         return theArray;
     };
+
     BitSet.prototype.clear = function () {
         this.value = 0;
     };
+
     BitSet.prototype.contains = function (value) {
         return !!(this.value & 1 << value);
     };
+
     BitSet.prototype.containsAll = function (values) {
         // values could be a BitSet or an Array
         var i;
@@ -63,9 +70,11 @@ module.exports = (function () {
             return (values.getValue() | this.value) === this.value;
         }
     };
+
     BitSet.prototype.getValue = function () {
         return this.value;
     };
+
     BitSet.prototype.getSize = function () {
         var size, x;
         size = 0;
@@ -76,14 +85,17 @@ module.exports = (function () {
         }
         return size;
     };
+
     BitSet.prototype.isEmpty = function () {
         return this.getSize() === 0;
     };
+
     BitSet.prototype.remove = function (value) {
         var oldValue = this.value;
         this.value &= ~(1 << value);
         return oldValue === this.value ? 0 : 1;
     };
+
     BitSet.prototype.removeAll = function (values) {
         // values could be a BitSet or an Array
         var i, oldValue;
@@ -97,6 +109,11 @@ module.exports = (function () {
         }
         return oldValue === this.value ? 0 : 1;
     };
-    return BitSet;
+
+    return {
+        create: function (values) {            
+            return new BitSet(values);
+        }
+    };
 }());
 

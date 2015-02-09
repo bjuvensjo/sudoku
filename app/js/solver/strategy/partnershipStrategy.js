@@ -1,44 +1,38 @@
 module.exports = (function () {
     var combinationUtil = require('../../util/combination');
     var indexUtil = require('../../util/index');
-    var Set = require('../../util/BitSet');
+    var set = require('../../util/bitSet');
     
-    var PartnershipStrategy = null;
-
-    PartnershipStrategy = function () {
-        if (!(this instanceof PartnershipStrategy)) {
-            return new PartnershipStrategy();
-        }
-        var i, indexes;
-        // boxes
-        this.boxIndexes = [];
-        indexes = [ 0, 3, 6, 27, 30, 33, 54, 57, 60 ];
-        for (i = 0; i < indexes.length; i++) {
-            this.boxIndexes.push(indexUtil.getBoxIndexes(indexes[i]));
-        }
-        // columns
-        this.columnIndexes = [];
-        indexes = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
-        for (i = 0; i < indexes.length; i++) {
-            this.columnIndexes.push(indexUtil.getColumnIndexes(indexes[i]));
-        }
-        // rows
-        this.rowIndexes = [];
-        indexes = [ 0, 9, 18, 27, 36, 45, 54, 63, 72 ];
-        for (i = 0; i < indexes.length; i++) {
-            this.rowIndexes.push(indexUtil.getRowIndexes(indexes[i]));
-        }
-        return this;
+    var apply, i, indexes;
+    var boxIndexes = [];
+    var columnIndexes = [];
+    var rowIndexes = [];
+    
+    // boxes
+    indexes = [ 0, 3, 6, 27, 30, 33, 54, 57, 60 ];
+    for (i = 0; i < indexes.length; i++) {
+        boxIndexes.push(indexUtil.getBoxIndexes(indexes[i]));
     };
+    // columns
+    indexes = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
+    for (i = 0; i < indexes.length; i++) {
+        columnIndexes.push(indexUtil.getColumnIndexes(indexes[i]));
+    };
+    // rows
+    indexes = [ 0, 9, 18, 27, 36, 45, 54, 63, 72 ];
+    for (i = 0; i < indexes.length; i++) {
+        rowIndexes.push(indexUtil.getRowIndexes(indexes[i]));
+    };
+    
     // TODO How about "fylla rutan"(see book "SUDOKU EXTREME")
-    PartnershipStrategy.prototype.apply = function (cells, notes) {
+    apply = function (cells, notes) {
         var handle, i, updated;
 
         handle = function (cells, notes, indexes) {
             var cellNotes, cellNotesContainsAllCombination, cellNotesNotContainsAllCombination, combination, combinationSet, combinationNotContainsAllCellNotes, countCombinationContainingNotes, countNotesContainingCombination, countNotesContainingSomeCombinationValue, i, j, k, n, notesValues, possibleNotesCombinations, result;
             result = [];
 
-            notesValues = new Set([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+            notesValues = set.create([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
             for (i = 0; i < indexes.length; i++) {
                 notesValues.remove(cells[indexes[i]]);
             }
@@ -50,7 +44,7 @@ module.exports = (function () {
                     possibleNotesCombinations = combinationUtil.getCombinations(notesValues, n);
                     for (i = 0; i < possibleNotesCombinations.length; i++) {
                         combination = possibleNotesCombinations[i];
-                        combinationSet = new Set(combination);
+                        combinationSet = set.create(combination);
                         countNotesContainingCombination = 0;
                         countNotesContainingSomeCombinationValue = 0;
                         countCombinationContainingNotes = 0;
@@ -114,18 +108,21 @@ module.exports = (function () {
 
         updated = [];
         // boxes
-        for (i = 0; i < this.boxIndexes.length; i++) {
-            updated = updated.concat(handle(cells, notes, this.boxIndexes[i]));
+        for (i = 0; i < boxIndexes.length; i++) {
+            updated = updated.concat(handle(cells, notes, boxIndexes[i]));
         }
         // columns
-        for (i = 0; i < this.columnIndexes.length; i++) {
-            updated = updated.concat(handle(cells, notes, this.columnIndexes[i]));
+        for (i = 0; i < columnIndexes.length; i++) {
+            updated = updated.concat(handle(cells, notes, columnIndexes[i]));
         }
         // rows
-        for (i = 0; i < this.rowIndexes.length; i++) {
-            updated = updated.concat(handle(cells, notes, this.rowIndexes[i]));
+        for (i = 0; i < rowIndexes.length; i++) {
+            updated = updated.concat(handle(cells, notes, rowIndexes[i]));
         }
         return updated;
     };
-    return new PartnershipStrategy();
+
+    return {
+        apply: apply
+    };
 }());

@@ -9,11 +9,12 @@ var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 var webserver = require('gulp-webserver');
+var zip = require('gulp-zip');
 
 var dest = 'build';
 
-gulp.task('build', function() {
-    gulp.run('manifest');
+gulp.task('build', ['manifest'], function() {
+    // return gulp.run('manifest');
 });
 
 // gulp.task('watch', function() {
@@ -29,6 +30,12 @@ gulp.task('default', ['build'], function() {
             livereload: true,
             open: 'index.html'
         }));
+});
+
+gulp.task('dist', ['build'], function () {
+    return gulp.src('build/**/*')
+        .pipe(zip('sudoku.war'))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('js', function() {
@@ -62,7 +69,7 @@ gulp.task('manifest', ['js', 'js-worker', 'resources', 'sass'], function() {
 });
 
 gulp.task('resources', function() {
-    return gulp.src(['app/img/*', 'app/favicon.ico', 'app/index.html'], {base: "app"})
+    return gulp.src(['app/img/*', 'app/favicon.ico', 'app/index.html', 'app/WEB-INF/*'], {base: "app"})
         .pipe(gulp.dest(dest));
 });
 

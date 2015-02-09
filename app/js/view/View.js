@@ -1,17 +1,19 @@
 module.exports = (function () {
     var $ = require('jquery'); 
-    var Clock = require('./Clock');
-    var Model = require('./Model');
+    var clock = require('./clock');
+    var model = require('./model');
 
     var View = null;
+
     View = function (model) {
         if (!(this instanceof View)) {
             return new View();
         }
         this.model = model;
-        this.clock = new Clock();
+        this.clock = clock.create();
         return this;
     };
+
     View.prototype.initialize = function () {
         var that = this;
         (function ($) {
@@ -241,7 +243,7 @@ module.exports = (function () {
                             // send message to web worker
                             worker.postMessage('createNew');
                         } else {
-                            that.model = new Model();
+                            that.model = model.create();
                             that.model.initialize();
                             that.model.save();
                             updateSudoku();
@@ -261,6 +263,7 @@ module.exports = (function () {
                     return methods.sudoku.apply(this, arguments);
                 } else {
                     $.error('Method ' + method + ' does not exist on jQuery.sudoku');
+                    return undefined;
                 }
             };
         })($);
@@ -279,5 +282,10 @@ module.exports = (function () {
             $sudoku.show();
         });
     };
-    return View;
+
+    return {
+        create: function (model) {
+            return new View(model);
+        }
+    };
 }());

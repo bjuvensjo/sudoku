@@ -1,12 +1,5 @@
 module.exports = (function () {
-    var Combination = null;
-    Combination = function () {
-        if (!(this instanceof Combination)) {
-            return new Combination();
-        }
-        return this;
-    };
-    Combination.prototype.getCombinations = function (values, n) {
+    var getCombinations = function (values, n) {
         var result, value, combination, combinations, i, j;
         result = [];
         if (n === 1) {
@@ -28,5 +21,8 @@ module.exports = (function () {
         }
         return result;
     };
-    return new Combination();
+    
+    return {
+        getCombinations: getCombinations
+    };
 }());

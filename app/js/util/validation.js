@@ -1,6 +1,6 @@
 module.exports = (function () {
-    var hasDuplicate, Validation = null;
     var indexUtil = require('./index');
+    var hasDuplicate, isAllValid, isValid;
     
     hasDuplicate = function (cells, indexes) {
         var values = {}, value, i;
@@ -16,13 +16,8 @@ module.exports = (function () {
         }
         return false;
     };
-    Validation = function () {
-        if (!(this instanceof Validation)) {
-            return new Validation();
-        }
-        return this;
-    };
-    Validation.prototype.isAllValid = function (cells) {
+
+    isAllValid = function (cells) {
         var index, indexes;
         // Check that all cells have a value
         for (index = 0; index < 81; index++) {
@@ -41,9 +36,14 @@ module.exports = (function () {
         }
         return true;
     };
-    Validation.prototype.isValid = function (cells, index) {
+
+    isValid = function (cells, index) {
         return !(cells[index] === 0 || hasDuplicate(cells, indexUtil.getBoxIndexes(index))
                  || hasDuplicate(cells, indexUtil.getColumnIndexes(index)) || hasDuplicate(cells, indexUtil.getRowIndexes(index)));
     };
-    return new Validation();
+
+    return {
+        isValid: isValid,
+        isAllValid: isAllValid
+    };
 }());

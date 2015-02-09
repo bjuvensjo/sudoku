@@ -1,9 +1,9 @@
 module.exports = (function () {
     var generator = require('../generator/generator');
     var indexUtil = require('../util/index');
-    var Notes = require('../solver/Notes');
-    var Set = require('../util/BitSet');
-    var Persistence = require('../util/Persistence');
+    var notes = require('../solver/notes');
+    var set = require('../util/bitSet');
+    var persistence = require('../util/persistence');
     
     var Model = null;
     // TODO Use Notes class!!!
@@ -16,21 +16,26 @@ module.exports = (function () {
         this.notes = null;
         this.remaining = -1;
         this.errors = -1;
-        this.persistence = new Persistence();
+        this.persistence = persistence.create();
         return this;
     };
+
     Model.prototype.getErrors = function () {
         return this.errors;
     };
+
     Model.prototype.getNotes = function () {
         return this.notes;
     };
+
     Model.prototype.getSolution = function () {
         return this.cells;
     };
+
     Model.prototype.getSudoku = function () {
         return this.sudoku;
     };
+
     Model.prototype.initialize = function () {
         var i;
         this.cells = generator.generate();
@@ -45,13 +50,16 @@ module.exports = (function () {
             }
         }
     };
+
     Model.prototype.isSolved = function () {
         return this.remaining === 0;
     };
+
     Model.prototype.createNotes = function () {
-        this.notes = new Notes(this.sudoku).getAllValues();
+        this.notes = notes.create(this.sudoku).getAllValues();
         return this.notes;
     };
+
     Model.prototype.removeNotes = function (index, value) {
         var cellIndexes, i, theIndex, indexes, theNotes;
         cellIndexes = indexUtil.getBoxIndexes(index).concat(indexUtil.getColumnIndexes(index), indexUtil.getRowIndexes(index));
@@ -68,6 +76,7 @@ module.exports = (function () {
         }
         return indexes;
     };
+
     Model.prototype.load = function () {
         var i, model, modelString;
         modelString = this.persistence.getString('model');
@@ -79,7 +88,7 @@ module.exports = (function () {
             this.notes.length = model.notes.length;
             for (i = 0; i < model.notes.length; i++) {
                 if (model.notes[i]) {
-                    this.notes[i] = new Set(model.notes[i].value);
+                    this.notes[i] = set.create(model.notes[i].value);
                 } else {
                     this.notes[i] = null;
                 }
@@ -88,25 +97,28 @@ module.exports = (function () {
             this.errors = model.errors | 0;
         }
     };
+
     Model.prototype.save = function () {
         var modelString = JSON.stringify(this);
         this.persistence.putString('model', modelString);
     };
+
     Model.prototype.updateNote = function (index, note) {
-        var set;
+        var aSet;
         if (!this.notes[index]) {
-            set = new Set([ note ]);
-            this.notes[index] = set;
+            aSet = set.create([ note ]);
+            this.notes[index] = aSet;
         } else {
-            set = this.notes[index];
-            if (set.contains(note)) {
-                set.remove(note);
+            aSet = this.notes[index];
+            if (aSet.contains(note)) {
+                aSet.remove(note);
             } else {
-                set.add(note);
+                aSet.add(note);
             }
         }
-        return set;
+        return aSet;
     };
+
     Model.prototype.updateSudoku = function (index, value) {
         if (value !== this.cells[index]) {
             this.errors++;
@@ -117,5 +129,10 @@ module.exports = (function () {
             return true;
         }
     };
-    return Model;
+
+    return {
+        create: function () {
+            return new Model();
+        }
+    };
 }());

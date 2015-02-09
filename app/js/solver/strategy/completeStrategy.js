@@ -1,12 +1,7 @@
 module.exports = (function () {
-    var CompleteStrategy = null;
-    CompleteStrategy = function () {
-        if (!(this instanceof CompleteStrategy)) {
-            return new CompleteStrategy();
-        }
-        return this;
-    };
-    CompleteStrategy.prototype.apply = function (cells, notes) {
+    var apply;
+
+    apply = function (cells, notes) {
         var i, value, updated;
         updated = [];
         for (i = 0; i < notes.getSize(); i++) {
@@ -21,5 +16,8 @@ module.exports = (function () {
         }
         return updated;
     };
-    return new CompleteStrategy();
+    
+    return {
+        apply: apply
+    };
 }());

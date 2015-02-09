@@ -16,8 +16,8 @@
 
 ## TODOs ##
 
+* Inject dependencies and add tests
+* Add mechanism to update version in appengine-web.xml from git tag
 * Add versioning to saved game
 * Automatically fill in when only one note left in square?
 * Compress images?
-
-

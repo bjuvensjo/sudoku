@@ -1,14 +1,12 @@
 'use strict';
 
-var Model = require('./view/Model');
-var View = require('./view/View');
-
 module.exports = (function () {
+    var model = require('./view/model');
+    var view = require('./view/view');
 
-    var model = new Model();
-    var view = new View(model);
+    var aView = view.create(model.create());
 
-    view.initialize();
+    aView.initialize();
     
-    return view;
+    return aView;
 }());

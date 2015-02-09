@@ -1,12 +1,12 @@
 module.exports = (function () {
-    var indexUtil = require('../util/index');
     var validation = require('../util/validation');
-    var Solver = require('../solver/Solver');
+    var solver = require('../solver/solver');
     var compellingStrategy = require('../solver/strategy/compellingStrategy');
     var completeStrategy = require('../solver/strategy/completeStrategy');
     var partnershipStrategy = require('../solver/strategy/partnershipStrategy');
 
-    var Generator = null, getRandomizedRange;
+    var generate, generateSudoku, getRandomizedRange;
+    
     getRandomizedRange = function (start, end) {
         var randomizedRange, range, i;
         randomizedRange = [];
@@ -21,13 +21,8 @@ module.exports = (function () {
         }
         return randomizedRange;
     };
-    Generator = function () {
-        if (!(this instanceof Generator)) {
-            return new Generator();
-        }
-        return this;
-    };
-    Generator.prototype.generate = function () {
+
+    generate = function () {
         var cells, generateCell;
         cells = [];
         generateCell = function (cells, index) {
@@ -46,10 +41,11 @@ module.exports = (function () {
         generateCell(cells, 0);
         return cells;
     };
-    Generator.prototype.generateSudoku = function (cells) {
+
+    generateSudoku = function (cells) {
         var i, indexes, solvable, solver, sudoku, sudokuClone;
         sudoku = cells.slice(0);
-        solver = new Solver([ completeStrategy, compellingStrategy, partnershipStrategy ]);
+        solver = solver.create([ completeStrategy, compellingStrategy, partnershipStrategy ]);
         indexes = getRandomizedRange(0, 80);
         for (i = 0; i < indexes.length; i++) {
             sudoku[indexes[i]] = 0;
@@ -61,5 +57,9 @@ module.exports = (function () {
         }
         return sudoku;
     };
-    return new Generator();
+
+    return {
+        generate: generate,
+        generateSudoku: generateSudoku
+    };
 }());

@@ -1,5 +1,5 @@
 module.exports = (function () {
-    var Solver = require('solver/Solver');
+    var aSolver = require('solver/solver');
     var compellingStrategy = require(solver/strategy/compellingStrategy);
     var completeStrategy = require('solver/strategy/completeStrategy');
     var partnershipStrategy = require('solver/strategy/partnershipStrategy');
@@ -61,18 +61,18 @@ module.exports = (function () {
                 0, 2, 4, 0, 0, 1, 0, 7, 0, 
                 0, 0, 0, 3, 0, 2, 1, 0, 4];
     
-    //solver = new Solver([compellingStrategy, completeStrategy]);
-    //solver = new Solver([completeStrategy, compellingStrategy]);
+    //aSolver = solver.create([compellingStrategy, completeStrategy]);
+    //aSolver = solver.create([completeStrategy, compellingStrategy]);
     //TODO Are both compelling- and completeStrategy needed?!
-    //solver = new Solver([compellingStrategy, partnershipStrategy]);
-    solver = new Solver([completeStrategy, compellingStrategy, partnershipStrategy]);
+    //aSolver = solver.create([compellingStrategy, partnershipStrategy]);
+    aSolver = solver.create([completeStrategy, compellingStrategy, partnershipStrategy]);
     var time = new Date().getTime();
-    //solution = solver.solve(easy);
-    //solution = solver.solve(besvarlig);
-    //solution = solver.solve(plagsam);
-    solution = solver.solve(mordande);
-    //solution = solver.solve(dodlig);
-    //solution = solver.solve(myGenerated);
+    //solution = aSolver.solve(easy);
+    //solution = aSolver.solve(besvarlig);
+    //solution = aSolver.solve(plagsam);
+    solution = aSolver.solve(mordande);
+    //solution = aSolver.solve(dodlig);
+    //solution = aSolver.solve(myGenerated);
     time = new Date().getTime() - time;
     var s = solution.valid + '\n';
     for (var i = 0; i < solution.cells.length; i++) {

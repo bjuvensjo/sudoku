@@ -1,15 +1,15 @@
 var expect = require('expect.js');
-var BitSet = require('./BitSet');
+var bitSet = require('./bitSet');
 
 describe("combination", function () {
 
     it("constructor", function () {
-        var set = new BitSet([ 1, 2, 3, 3 ]);
+        var set = bitSet.create([ 1, 2, 3, 3 ]);
         expect(set.containsAll([ 1, 2, 3 ])).to.be(true);
     });
 
     it("add", function () {
-        var set = new BitSet();
+        var set = bitSet.create();
         set.add(1);
         set.add(2);
         set.add(3);
@@ -19,31 +19,31 @@ describe("combination", function () {
     });
 
     it("addAll", function () {
-        var set = new BitSet([ 1, 2, 3 ]);
+        var set = bitSet.create([ 1, 2, 3 ]);
         set.addAll([ 4, 5, 6 ]);
-        set.addAll(new BitSet([ 4, 5, 6, 7, 8, 9 ]));
+        set.addAll(bitSet.create([ 4, 5, 6, 7, 8, 9 ]));
         expect(set.asArray().length).to.be(9);
         expect(set.containsAll([ 1, 2, 3 ])).to.be(true);
     });
 
     it("containsAll", function () {
-        var set1 = new BitSet([ 1, 2, 3 ]);
-        var set2 = new BitSet([ 1, 2 ]);
+        var set1 = bitSet.create([ 1, 2, 3 ]);
+        var set2 = bitSet.create([ 1, 2 ]);
         expect(set1.containsAll(set2)).to.be(true);
         expect(set2.containsAll(set1)).to.be(false);
     });
 
     it("asArray", function () {
-        var set = new BitSet([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+        var set = bitSet.create([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
         expect(set.asArray().length).to.be(10);
         expect(set.asArray()).to.eql([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
     });
 
     it("contains", function () {
         var i;
-        var set = new BitSet([ 1, 2, 3 ]);
+        var set = bitSet.create([ 1, 2, 3 ]);
         set.addAll([ 4, 5, 6 ]);
-        set.addAll(new BitSet([ 7, 8 ]));
+        set.addAll(bitSet.create([ 7, 8 ]));
         set.add(9);
         for (i = 1; i < 10; i++) {
             expect(set.contains(i)).to.be(true);
@@ -53,24 +53,24 @@ describe("combination", function () {
     });
 
     it("getSize", function () {
-        var set = new BitSet([ 1, 2, 3, 4, 5 ]);
+        var set = bitSet.create([ 1, 2, 3, 4, 5 ]);
         set.removeAll([ 1, 2 ]);
         set.remove(3);
         expect(set.getSize()).to.be(2);
     });
 
     it("isEmpty", function () {
-        var set = new BitSet([ 1, 2, 3, 4, 5 ]);
+        var set = bitSet.create([ 1, 2, 3, 4, 5 ]);
         set.removeAll([ 1, 2 ]);
         set.remove(3);
         expect(set.isEmpty()).to.be(false);
 
-        set = new BitSet();
+        set = bitSet.create();
         expect(set.isEmpty()).to.be(true);
     });
 
     it("remove", function () {
-        var set = new BitSet();
+        var set = bitSet.create();
         set.add(1);
         set.add(2);
         set.add(3);
@@ -82,7 +82,7 @@ describe("combination", function () {
     });
 
     it("removeAll", function () {
-        var set = new BitSet([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
+        var set = bitSet.create([ 1, 2, 3, 4, 5, 6, 7, 8, 9 ]);
         set.removeAll([ 4, 5, 6 ]);
         expect(set.getSize()).to.be(6);
         expect(set.containsAll([ 1, 2, 3, 7, 8, 9 ])).to.be(true);

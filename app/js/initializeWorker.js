@@ -1,6 +1,6 @@
-var Model = require('./view/Model');
+var model = require('./view/model');
 self.onmessage = function (e) {
-    var model = new Model();
-    model.initialize();
-    self.postMessage(model);
+    var aModel = model.create();
+    aModel.initialize();
+    self.postMessage(aModel);
 };

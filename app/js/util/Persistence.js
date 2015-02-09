@@ -1,23 +1,20 @@
 module.exports = (function () {
-    var Persistence = null, get, put;
-    Persistence = function () {
-        if (!(this instanceof Persistence)) {
-            return new Persistence();
-        }
-        return this;
-    };
+    var getInt, getIntArray, getString, i, putInt, putIntArray, putString, storageValue, tmp, value = null;
+
     get = function (key) {
         if (typeof (Storage) !== "undefined") {
             return localStorage[key];
         }
         return null;
     };
+
     put = function (key, value) {
         if (typeof (Storage) !== "undefined") {
             localStorage[key] = value;
         }
     };
-    Persistence.prototype.getIntArray = function (key) {
+
+    getIntArray = function (key) {
         var i, storageValue, tmp, value = null;
         storageValue = get(key);
         if (storageValue) {
@@ -29,24 +26,41 @@ module.exports = (function () {
         }
         return value;
     };
-    Persistence.prototype.getInt = function (key) {
+
+    getInt = function (key) {
         var value = get(key);
         if (value) {
             return parseInt(value);
         }
         return null;
     };
-    Persistence.prototype.getString = function (key) {
+
+    getString = function (key) {
         return get(key) || null;
     };
-    Persistence.prototype.putIntArray = function (key, value) {
+
+    putIntArray = function (key, value) {
         put(key, '' + value);
     };
-    Persistence.prototype.putInt = function (key, value) {
+
+    putInt = function (key, value) {
         put(key, '' + value);
     };
-    Persistence.prototype.putString = function (key, value) {
+
+    putString = function (key, value) {
         put(key, value);
     };
-    return Persistence;
+
+    return {
+        create: function () {
+            return {
+                getInt: getInt,
+                getIntArray: getIntArray,
+                getString: getString,
+                putInt: putInt,
+                putIntArray: putIntArray,
+                putString: putString
+            };
+        }
+    };
 }());

@@ -1,6 +1,5 @@
 var expect = require('expect.js');
 var combination = require('./combination');
-var Set = require('./Set');
 
 describe("combination", function () {
     var values = null;

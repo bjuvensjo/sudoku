@@ -1,12 +1,7 @@
 module.exports = (function () {
-    var Index = null;
-    Index = function () {
-        if (!(this instanceof Index)) {
-            return new Index();
-        }
-        return this;
-    };
-    Index.prototype.getBoxIndexes = function (index) {
+    var getBoxIndexes, getColumnIndexes, getRowIndexes;
+    
+    getBoxIndexes = function (index) {
         var indexes = [], boxIndex = Math.floor(index / 27) * 27 + Math.floor((index % 9) / 3) * 3, i;
         for (i = 0; i < 9; i++) {
             indexes.push(boxIndex);
@@ -17,7 +12,8 @@ module.exports = (function () {
         }
         return indexes;
     };
-    Index.prototype.getColumnIndexes = function (index) {
+
+    getColumnIndexes = function (index) {
         var indexes = [], columnIndex = index % 9, i;
         for (i = 0; i < 9; i++) {
             indexes.push(columnIndex);
@@ -25,7 +21,8 @@ module.exports = (function () {
         }
         return indexes;
     };
-    Index.prototype.getRowIndexes = function (index) {
+
+    getRowIndexes = function (index) {
         var indexes = [], rowIndex = Math.floor(index / 9) * 9, i;
         for (i = 0; i < 9; i++) {
             indexes.push(rowIndex);
@@ -33,5 +30,10 @@ module.exports = (function () {
         }
         return indexes;
     };
-    return new Index();
+    
+    return {
+        getBoxIndexes: getBoxIndexes,
+        getColumnIndexes: getColumnIndexes,
+        getRowIndexes: getRowIndexes
+    };
 }());

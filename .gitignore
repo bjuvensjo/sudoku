@@ -5,6 +5,7 @@
 .tern*
 bower_components
 build
+dist
 node_modules
 npm-debug.log
 stylesheets

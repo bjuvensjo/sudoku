@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<mime-mapping>
-		<extension>appcache</extension>
+		<extension>manifest</extension>
 		<mime-type>text/cache-manifest</mime-type>
 	</mime-mapping>
 
