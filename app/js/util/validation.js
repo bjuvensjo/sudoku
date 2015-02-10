@@ -11,8 +11,8 @@ module.exports = (function () {
                     return true;
                 } else {
                     values[value] = value;
-                };
-            };
+                }
+            }
         }
         return false;
     };
@@ -28,9 +28,9 @@ module.exports = (function () {
         // Check duplicates in all rows, columns and boxes
         indexes = [ 0, 12, 24, 28, 40, 52, 56, 68, 80 ];
         for (index = 0; index < indexes.length; index++) {
-            if (hasDuplicate(cells, indexUtil.getBoxIndexes(indexes[index]))
-                || hasDuplicate(cells, indexUtil.getColumnIndexes(indexes[index]))
-                || hasDuplicate(cells, indexUtil.getRowIndexes(indexes[index]))) {
+            if (hasDuplicate(cells, indexUtil.getBoxIndexes(indexes[index])) ||
+                hasDuplicate(cells, indexUtil.getColumnIndexes(indexes[index])) ||
+                hasDuplicate(cells, indexUtil.getRowIndexes(indexes[index]))) {
                 return false;
             }
         }
@@ -38,8 +38,9 @@ module.exports = (function () {
     };
 
     isValid = function (cells, index) {
-        return !(cells[index] === 0 || hasDuplicate(cells, indexUtil.getBoxIndexes(index))
-                 || hasDuplicate(cells, indexUtil.getColumnIndexes(index)) || hasDuplicate(cells, indexUtil.getRowIndexes(index)));
+        return !(cells[index] === 0 || hasDuplicate(cells, indexUtil.getBoxIndexes(index)) ||
+                 hasDuplicate(cells, indexUtil.getColumnIndexes(index)) ||
+                 hasDuplicate(cells, indexUtil.getRowIndexes(index)));
     };
 
     return {

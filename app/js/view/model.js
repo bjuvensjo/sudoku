@@ -4,6 +4,8 @@ module.exports = (function () {
     var notes = require('../solver/notes');
     var set = require('../util/bitSet');
     var persistence = require('../util/persistence');
+
+    var thePersistence = persistence.create();    
     
     var Model = null;
     // TODO Use Notes class!!!
@@ -16,7 +18,6 @@ module.exports = (function () {
         this.notes = null;
         this.remaining = -1;
         this.errors = -1;
-        this.persistence = persistence.create();
         return this;
     };
 
@@ -79,7 +80,7 @@ module.exports = (function () {
 
     Model.prototype.load = function () {
         var i, model, modelString;
-        modelString = this.persistence.getString('model');
+        modelString = thePersistence.getString('model');
         if (modelString) {
             model = JSON.parse(modelString);
             this.cells = model.cells;
@@ -100,7 +101,7 @@ module.exports = (function () {
 
     Model.prototype.save = function () {
         var modelString = JSON.stringify(this);
-        this.persistence.putString('model', modelString);
+        thePersistence.putString('model', modelString);
     };
 
     Model.prototype.updateNote = function (index, note) {

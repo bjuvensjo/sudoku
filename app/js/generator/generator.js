@@ -43,14 +43,14 @@ module.exports = (function () {
     };
 
     generateSudoku = function (cells) {
-        var i, indexes, solvable, solver, sudoku, sudokuClone;
+        var i, indexes, solvable, theSolver, sudoku, sudokuClone;
         sudoku = cells.slice(0);
-        solver = solver.create([ completeStrategy, compellingStrategy, partnershipStrategy ]);
+        theSolver = solver.create([ completeStrategy, compellingStrategy, partnershipStrategy ]);
         indexes = getRandomizedRange(0, 80);
         for (i = 0; i < indexes.length; i++) {
             sudoku[indexes[i]] = 0;
             sudokuClone = sudoku.slice(0);
-            solvable = solver.solve(sudokuClone).valid;
+            solvable = theSolver.solve(sudokuClone).valid;
             if (!solvable) {
                 sudoku[indexes[i]] = cells[indexes[i]];
             }

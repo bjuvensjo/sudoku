@@ -12,17 +12,17 @@ module.exports = (function () {
     indexes = [ 0, 3, 6, 27, 30, 33, 54, 57, 60 ];
     for (i = 0; i < indexes.length; i++) {
         boxIndexes.push(indexUtil.getBoxIndexes(indexes[i]));
-    };
+    }
     // columns
     indexes = [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ];
     for (i = 0; i < indexes.length; i++) {
         columnIndexes.push(indexUtil.getColumnIndexes(indexes[i]));
-    };
+    }
     // rows
     indexes = [ 0, 9, 18, 27, 36, 45, 54, 63, 72 ];
     for (i = 0; i < indexes.length; i++) {
         rowIndexes.push(indexUtil.getRowIndexes(indexes[i]));
-    };
+    }
     
     // TODO How about "fylla rutan"(see book "SUDOKU EXTREME")
     apply = function (cells, notes) {

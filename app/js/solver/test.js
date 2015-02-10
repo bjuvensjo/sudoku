@@ -66,7 +66,7 @@ module.exports = (function () {
     //TODO Are both compelling- and completeStrategy needed?!
     //aSolver = solver.create([compellingStrategy, partnershipStrategy]);
     aSolver = solver.create([completeStrategy, compellingStrategy, partnershipStrategy]);
-    var time = new Date().getTime();
+    time = new Date().getTime();
     //solution = aSolver.solve(easy);
     //solution = aSolver.solve(besvarlig);
     //solution = aSolver.solve(plagsam);

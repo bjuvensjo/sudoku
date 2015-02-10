@@ -6,7 +6,7 @@ module.exports = (function () {
             var lastUpdate = null;
             var stopped = false;
             var time = 0;
-            var persistence = persistence.create();
+            var thePersistence = persistence.create();
 
             return {
                 getTime: function () {
@@ -24,7 +24,7 @@ module.exports = (function () {
                 },
                 load: function () {
                     var model, modelString;
-                    modelString = persistence.getString('clock');
+                    modelString = thePersistence.getString('clock');
                     if (modelString) {
                         model = JSON.parse(modelString);
                         stopped = model.stopped;
@@ -36,7 +36,7 @@ module.exports = (function () {
                         stopped: stopped,
                         time: time
                     });
-                    persistence.putString('clock', modelString);
+                    thePersistence.putString('clock', modelString);
                 },
                 start: function (createNew) {
                     lastUpdate = new Date();

@@ -2,30 +2,25 @@ var browserify = require('gulp-browserify');
 var compass = require('gulp-compass');
 var concat = require('gulp-concat');  
 var gulp = require('gulp');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 var manifest = require('gulp-manifest');
 var minifyCSS = require('gulp-minify-css');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-var watch = require('gulp-watch');
 var webserver = require('gulp-webserver');
 var zip = require('gulp-zip');
 
-var dest = 'build';
+var buildDir = 'build';
+var distDir = 'build';
 
 gulp.task('build', ['manifest'], function() {
-    // return gulp.run('manifest');
+
 });
 
-// gulp.task('watch', function() {
-//     console.log('#######');
-//     gulp.src('app/**/*.js')
-//         .pipe(watch('app/**/*.js'));
-// });
-
-// gulp.task('default', ['watch'], function() {
-gulp.task('default', ['build'], function() {
-    return gulp.src(dest)
+gulp.task('default', ['build', 'watch'], function() {
+    gulp.src(buildDir)
         .pipe(webserver({
             livereload: true,
             open: 'index.html'
@@ -35,25 +30,31 @@ gulp.task('default', ['build'], function() {
 gulp.task('dist', ['build'], function () {
     return gulp.src('build/**/*')
         .pipe(zip('sudoku.war'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest(distDir));
 });
 
-gulp.task('js', function() {
+gulp.task('js', ['jshint'], function() {
     return gulp.src(['app/js/app.js'])
         .pipe(browserify())
-    //        .pipe(gulp.dest('build')) // This will output the non minified version
+        // .pipe(gulp.dest(buildDir)) // This will output the non minified version
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest(dest)); // This will output the minified version
+        .pipe(gulp.dest(buildDir)); // This will output the minified version
 });
 
-gulp.task('js-worker', function() {
+gulp.task('jshint', function() {
+    return gulp.src(['app/js/**/*'])
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish));
+});
+
+gulp.task('js-worker', ['jshint'], function() {
     return gulp.src(['app/js/initializeWorker.js'])
         .pipe(browserify())
-    //        .pipe(gulp.dest(dest)) // This will output the non minified version
+        // .pipe(gulp.dest(buildDir)) // This will output the non minified version
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest(dest)); // This will output the minified version    
+        .pipe(gulp.dest(buildDir)); // This will output the minified version    
 });
 
 gulp.task('manifest', ['js', 'js-worker', 'resources', 'sass'], function() {
@@ -63,14 +64,14 @@ gulp.task('manifest', ['js', 'js-worker', 'resources', 'sass'], function() {
             preferOnline: true,
             network: ['http://*', 'https://*', '*'],
             filename: 'app.manifest',
-            exclude: 'app.manifest'
+            exclude: ['app.manifest', 'WEB-INF/appengine-web.xml', 'WEB-INF/web.xml']
         }))
-        .pipe(gulp.dest(dest));    
+        .pipe(gulp.dest(buildDir));    
 });
 
 gulp.task('resources', function() {
     return gulp.src(['app/img/*', 'app/favicon.ico', 'app/index.html', 'app/WEB-INF/*'], {base: "app"})
-        .pipe(gulp.dest(dest));
+        .pipe(gulp.dest(buildDir));
 });
 
 gulp.task('sass', function() {
@@ -81,10 +82,10 @@ gulp.task('sass', function() {
             sass: './app/sass/sass',
             import_path: ['./bower_components/bootstrap-sass/assets/stylesheets']
         }))
-    //        .pipe(gulp.dest(dest)) // This will output the non minified version    
+    //        .pipe(gulp.dest(buildDir)) // This will output the non minified version    
         .pipe(minifyCSS())
         .pipe(rename({ extname: '.min.css' }))
-        .pipe(gulp.dest(dest)); // This will output the minified version
+        .pipe(gulp.dest(buildDir)); // This will output the minified version
 });
 
 gulp.task('test', function () {
@@ -98,4 +99,8 @@ gulp.task('test', function () {
 gulp.task('test-single', function () {
     return gulp.src('app/js/**/*Test.js', {read: false})
         .pipe(mocha({reporter: 'spec'}));
+});
+
+gulp.task('watch', function() {
+    gulp.watch('app/**/*', ['build']);
 });
