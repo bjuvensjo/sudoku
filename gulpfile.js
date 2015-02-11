@@ -88,7 +88,7 @@ gulp.task('sass', function() {
         .pipe(gulp.dest(buildDir)); // This will output the minified version
 });
 
-gulp.task('test', ['test-single'],function () {    
+gulp.task('test', ['test-single'], function () {    
     gulp.watch('app/js/**', ['test-single']);
 });
 
