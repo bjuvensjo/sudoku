@@ -13,7 +13,7 @@ var webserver = require('gulp-webserver');
 var zip = require('gulp-zip');
 
 var buildDir = 'build';
-var distDir = 'build';
+var distDir = 'dist';
 
 gulp.task('build', ['manifest'], function() {
 
@@ -33,7 +33,7 @@ gulp.task('dist', ['build'], function () {
         .pipe(gulp.dest(distDir));
 });
 
-gulp.task('js', ['jshint'], function() {
+gulp.task('js', ['test-single', 'jshint'], function() {
     return gulp.src(['app/js/app.js'])
         .pipe(browserify())
         // .pipe(gulp.dest(buildDir)) // This will output the non minified version
@@ -48,7 +48,7 @@ gulp.task('jshint', function() {
         .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('js-worker', ['jshint'], function() {
+gulp.task('js-worker', ['test-single', 'jshint'], function() {
     return gulp.src(['app/js/initializeWorker.js'])
         .pipe(browserify())
         // .pipe(gulp.dest(buildDir)) // This will output the non minified version
@@ -88,12 +88,8 @@ gulp.task('sass', function() {
         .pipe(gulp.dest(buildDir)); // This will output the minified version
 });
 
-gulp.task('test', function () {
-    gulp.run('test-single');
-    
-    gulp.watch('app/js/**', function(event) {
-        gulp.run('test-single');
-    });
+gulp.task('test', ['test-single'],function () {    
+    gulp.watch('app/js/**', ['test-single']);
 });
 
 gulp.task('test-single', function () {
