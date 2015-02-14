@@ -138,19 +138,25 @@ module.exports = (function () {
                     });
                 },
                 numbers : function () {
-                    var number, $navbar, $navbarInner, $container, $a;
-                    $navbar = $('<div class="navbar navbar-default"></div>');
-                    $container = $('<div class="container"></div>');
-                    $navbar.append($container);
+                    var number, $a, $div, $table, $td, $tr;
+                    $div = $('<div class=""></div>');
+                    $table = $('<table></table>');
+                    $tr = $('<tr></tr>');
+                    $div.append($table);
+                    $table.append($tr);
                     for (number = 1; number < 10; number++) {
+                        $td = $('<td></td>');
                         $a = $('<a class="number" href="#">' + number + '</a>');
-                        $container.append($a);
+                        $tr.append($td);
+                        $td.append($a);
                         $a.click(selectNumber);
                     }
+                    $td = $('<td></td>');
                     $a = $('<a class="number" href="#">' + 'V' + '</a>');
-                    $container.append($a);
+                    $tr.append($td);
+                    $td.append($a);
                     $a.click(toggleNumberNotes);
-                    this.append($navbar);
+                    this.append($div);
                     return this;
                 },
                 start : function (createNew) {
