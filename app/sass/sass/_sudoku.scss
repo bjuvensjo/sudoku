@@ -1,12 +1,12 @@
 @import 'bootstrap_custom';
 
-$bg-color: gray;
+$bg-color: black;
 
 body {
     background-color: $bg-color;
 }
 
-#loader {
+.loader {
     display: none;
     position: absolute;
     top: 50%;
@@ -19,7 +19,7 @@ body {
     background: url('../img/ajax-loader.gif') no-repeat;
     cursor: wait;
 }
-#sudoku {
+.sudoku {
     display: none;
     font-size: 20px;
     margin: 0;
@@ -48,13 +48,13 @@ body {
     /* Opera */
 
 }
-#errors {
+.errors {
     color: red;
     font-size: 70%;
     margin-right: 20px;
     
 }
-#clock {
+.clock {
     text-align: right;
     font-size: 70%;
 }
@@ -70,31 +70,27 @@ td {
     padding: 0;
     text-align: center;
 }
-
 .navbar {
     margin-bottom: 0;
 }
 
-.navbar-inner {
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    padding-left: 5px;
-    border-radius: 0;
-}
-.navbar .number {
+.number {
+    @extend .btn, .btn-default, .navbar-btn;
     margin: 0;
     float: left;
     font-size: 1em;
-    // padding: 0.4em;
+    /* padding: 0.35em; */
     border: solid thin black;
 }
-.navbar .notes-toggle {
+
+.notes-toggle {
     @extend .btn-warning;
 }
-.navbar .selected-number {
-   @extend .btn-info;
+
+.selected-number {
+    @extend .btn-info;
 }
+
 .square {
     @extend .btn-default;
     display: table-cell;
@@ -113,11 +109,13 @@ td {
 .error {
     @extend .btn-danger;
 }
-#new {
+.new {
+    @extend .btn, .btn-warning, .navbar-btn;    
     margin-left: 0px;
     margin-right: 20px;
 }
-#help {
+.help {
+    @extend .btn, .btn-success, .navbar-btn;
     margin-left: 0px;
     margin-right: 0px;
 }
@@ -127,7 +125,7 @@ td {
         margin: 50px;
         padding: 0;
     }
-    #sudoku {
+    .sudoku {
         margin: 20px auto;
         width: 460px;
         font-size: 27px;

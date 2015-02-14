@@ -77,7 +77,7 @@ module.exports = (function () {
                             }, 300);
                         }
                         that.model.save();
-                        $('#errors').html(that.model.getErrors() || '');
+                        $('.errors').html(that.model.getErrors() || '');
                     }
                 }
             };
@@ -88,7 +88,7 @@ module.exports = (function () {
             };
             methods = {
                 sudoku : function () {
-                    var $sudoku = $('<table class="sudoku"></table'), $row, $column, r, c, box;
+                    var $sudoku = $('<table></table'), $row, $column, r, c, box;
                     box = function (boxRow, boxColumn) {
                         var $box = $('<table class="box"></table'), $row, $column, modelIndex, r, c, getModelIndex;
                         getModelIndex = function (boxRow, boxColumn, row, column) {
@@ -121,11 +121,6 @@ module.exports = (function () {
                     this.append($sudoku);
                     return this;
                 },
-                clock : function () {
-                    var $clock = $('<div id="clock"></div>');
-                    this.append($clock);
-                    return this;
-                },
                 help : function () {
                     var $square, modelIndex, notes, value;
                     notes = that.model.createNotes();
@@ -144,17 +139,15 @@ module.exports = (function () {
                 },
                 numbers : function () {
                     var number, $navbar, $navbarInner, $container, $a;
-                    $navbar = $('<div class="navbar"></div>');
-                    $navbarInner = $('<div class="navbar-inner"></div>');
+                    $navbar = $('<div class="navbar navbar-default"></div>');
                     $container = $('<div class="container"></div>');
-                    $navbar.append($navbarInner);
-                    $navbarInner.append($container);
+                    $navbar.append($container);
                     for (number = 1; number < 10; number++) {
-                        $a = $('<a class="btn btn-default number" href="#">' + number + '</a>');
+                        $a = $('<a class="number" href="#">' + number + '</a>');
                         $container.append($a);
                         $a.click(selectNumber);
                     }
-                    $a = $('<a class="btn btn-default number" href="#">' + 'V' + '</a>');
+                    $a = $('<a class="number" href="#">' + 'V' + '</a>');
                     $container.append($a);
                     $a.click(toggleNumberNotes);
                     this.append($navbar);
@@ -215,18 +208,18 @@ module.exports = (function () {
                                     s += '0';
                                 }
                                 s += time.seconds;
-                                $('#clock').html(s);
+                                $('.clock').html(s);
                             };
                             updateClock();
                             clockInterval = setInterval(function () {
                                 updateClock();
                             }, 1000);
                         }
-                        $('#loader').hide();
+                        $('.loader').hide();
                         $sudoku.removeClass('sudoku-solved');
-                        $('#errors').html(that.model.getErrors() || '');
+                        $('.errors').html(that.model.getErrors() || '');
                     };
-                    $('#loader').show();
+                    $('.loader').show();
                     if (createNew) {
                         if (typeof (Worker) !== "undefined") {
                             var worker = new Worker('initializeWorker.min.js');
@@ -268,15 +261,14 @@ module.exports = (function () {
             };
         })($);
         $(function () {
-            var $sudoku = $('#sudoku');
+            var $sudoku = $('.sudoku');
             $sudoku.sudoku();
             $sudoku.sudoku('numbers');
-            // $sudoku.sudoku('clock');
             $sudoku.sudoku('start', false);
-            $('#new').click(function () {
+            $('.new').click(function () {
                 $sudoku.sudoku('start', true);
             });
-            $('#help').click(function () {
+            $('.help').click(function () {
                 $sudoku.sudoku('help');
             });
             $sudoku.show();
