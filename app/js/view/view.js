@@ -2,9 +2,10 @@ module.exports = (function () {
     var $ = require('jquery'); 
     var clock = require('./clock');
     var model = require('./model');
+    var numbers = require('./numbers');
 
     var view;
-    var clockInterval = null, formatNotes, methods, $selectedNumber = null, selectedNumber = null, writeNumber, notes = false;
+    var clockInterval = null, formatNotes, methods, writeNumber;
     
     formatNotes = function (set) {
         var formatedNotes, i, sortedArray;
@@ -23,23 +24,23 @@ module.exports = (function () {
         return formatedNotes;
     };
     
-    writeNumber = function ($sudoku) {
+    writeNumber = function ($game) {
         var $this = $(this), $modelIndex, i, modelIndex, modelIndexes, set;
-        if ($selectedNumber) {
+        if (numbers.$selectedNumber) {
             modelIndex = parseInt($this.attr('id'));
-            if (notes) {
+            if (numbers.notes) {
                 if (!($this.hasClass('notes'))) {
                     $this.addClass('notes');
                 }
-                set = view.model.updateNote(modelIndex, selectedNumber);
+                set = view.model.updateNote(modelIndex, numbers.selectedNumber);
                 view.model.save();
                 $this.html(formatNotes(set));
             } else {
-                if (view.model.updateSudoku(modelIndex, selectedNumber)) {
+                if (view.model.updateSudoku(modelIndex, numbers.selectedNumber)) {
                     $this.off('click');
                     $this.removeClass('notes');
-                    $this.html(selectedNumber);
-                    modelIndexes = view.model.removeNotes(modelIndex, selectedNumber);
+                    $this.html(numbers.selectedNumber);
+                    modelIndexes = view.model.removeNotes(modelIndex, numbers.selectedNumber);
                     view.model.save();
                     for (i = 0; i < modelIndexes.length; i++) {
                         $modelIndex = $('#' + modelIndexes[i]);
@@ -49,7 +50,7 @@ module.exports = (function () {
                     }
                     if (view.model.isSolved()) {
                         view.clock.stop();
-                        $sudoku.addClass('sudoku-solved');
+                        $game.addClass('sudoku-solved');
                     }
                 } else {
                     $this.addClass('error');
@@ -63,9 +64,6 @@ module.exports = (function () {
         }
     };    
 
-
-
-    
     var help = function () {
         var $square, modelIndex, notes, value;
         notes = view.model.createNotes();
@@ -81,26 +79,6 @@ module.exports = (function () {
                 $square.html(formatNotes(value));
             }
         });
-    };
-
-    var numbers = function () {
-        var selectNumber = function () {
-            if ($selectedNumber) {
-                $selectedNumber.removeClass('selected-number');
-            }
-            $selectedNumber = $(this);
-            selectedNumber = parseInt($selectedNumber.html());
-            $selectedNumber.addClass('selected-number');
-        };
-
-        var toggleNumberNotes = function () {
-            notes = !notes;
-            $(this).toggleClass('notes-toggle');
-            $(this).html(notes ? 'N' : 'V');
-        };
-        
-        $('.number').click(selectNumber);
-        $('.toggle').click(toggleNumberNotes);
     };
 
     var start = function (createNew) {
@@ -197,7 +175,7 @@ module.exports = (function () {
     
     var initialize = function () {        
         $(function () {
-            numbers();
+            numbers.initialize();
             start(false);
             $('.new').click(function () {
                 start(true);
