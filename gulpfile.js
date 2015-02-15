@@ -23,7 +23,6 @@ gulp.task('default', ['build', 'watch'], function() {
     gulp.src(buildDir)
         .pipe(webserver({
             host: '0.0.0.0',
-            directoryListing: true,
             livereload: true,
             open: 'index.html'
         }));

@@ -5,8 +5,6 @@ module.exports = (function () {
     var view = require('./view/view');
 
     var aView = view.create(model.create());
-
-    aView.initialize();
     
     return aView;
 }());
