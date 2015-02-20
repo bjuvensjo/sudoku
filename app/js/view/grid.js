@@ -1,7 +1,7 @@
 module.exports = (function () {
     'use strict';    
 
-    var $ = require('jquery');
+    var $ = require('zepto-browserify').$;
     
     $(function() {
         var canvas, ctx, delta, dimension, i, x, y;

@@ -1,5 +1,5 @@
 module.exports = (function () {
-    var $ = require('jquery'); 
+    var $ = require('zepto-browserify').$;
     var clock = require('./clock');
     var model = require('./model');
     var numbers = require('./numbers');

@@ -1,5 +1,5 @@
 module.exports = (function () {
-    var $ = require('jquery');
+    var $ = require('zepto-browserify').$;
 
     var selectNumber = function () {
         if (numbers.$selectedNumber) {
