@@ -1,13 +1,133 @@
-@import 'bootstrap_custom';
+// Variables
+$width: 316px;
+//$width: 500px;
+$border-width: 1px;
+$font-size: $width / 9 * 0.45;
 
-$bg-color: white;
-$font-size: 16px;
-$font-size-wide: 27px;
-$font-size-small: 0.6em;
+// Reset
+body, div, li, ul {
+    margin: 0;
+    padding: 0;
+}
 
-body {
-    background-color: $bg-color;
+// Mixins
+@mixin btn($bg-color, $color: black) {
+    background: linear-gradient(lighten($bg-color, 20%), darken($bg-color, 20%));    
+    border: solid $border-width  $bg-color;
+    border-radius: 5px;
+    color: $color;
+}
+
+@mixin rectangle($rectangle-width, $rectangle-height, $float: left) {
+    float: $float;    
     font-size: $font-size;
+    height: $rectangle-height;
+    line-height: $rectangle-height;
+    list-style-type: none;
+    text-align: center;
+    width: $rectangle-width;
+}
+
+@mixin button($button-width, $button-height, $bg-color, $color: black, $float: left) {
+    @include rectangle($button-width, $button-height, $float);
+    @include btn($bg-color, $color);
+}
+
+// Styling
+body {
+    margin-top: $width / 9;
+    margin-left: auto;
+    margin-right: auto;
+    width: $width;
+    background-color: black;
+    
+    .menu {
+        // $border-width * 3 creates a little space betwen the buttons
+        $button-width: $width * 1.5 / 9 - $border-width * 3;
+        $button-color: #0174DF;
+        $height: $width / 9 * 0.8;
+        
+        width: $width;
+        height: $width / 9;
+        
+        .brand {
+            @include rectangle($width * 2 / 9, $height);
+            text-align: left;
+            color: white;
+        }
+        .errors {
+            @include rectangle($width * 1 / 9, $height);
+            color: white;
+        }
+        .clock {
+            @include rectangle($width * 3 / 9, $height);
+            color: white;            
+        }
+        .help {
+            @include button($button-width, $height, $button-color, white);
+        }
+        .new {
+            @include button($button-width, $height, $button-color, white, right);
+        }
+    }    
+
+    .sudoku {
+        // background-image: url("../images/grid.jpg");
+        background-color: white;
+        background-size: $width $width;
+        width: $width;
+        height: $width;
+
+        .square {
+            $square-width: $width / 9;
+            $note-width: $square-width / 3;
+            
+            @include rectangle($square-width, $square-width);
+
+            .notes {
+                line-height: $note-width;
+                padding-top: 3px;
+
+                .note {
+                    @include rectangle($note-width, note-width);
+                    font-size: $note-width;
+                }
+            }
+        }
+        
+        .error {
+            $error-color: #FF0040;
+            background: linear-gradient(lighten($error-color, 20%), darken($error-color, 20%));                
+        }
+
+    }
+
+    .controllers {
+        $button-color: #cede85;
+        $margin-right: 2px;
+        $button-width: ($width - $border-width * 20 - $margin-right * 9) / 10;
+
+        width: $width;
+        height: $width / 9;
+        margin-top: $width / 9 - $button-width;
+        
+        .number {
+            @include button($button-width, $button-width, $button-color);            
+            margin-right: $margin-right;
+        }
+
+        .selected-number {
+            @include button($button-width, $button-width, #0174DF, white);
+        }
+
+        .selector-V {
+            @include button($button-width, $button-width, $button-color, black, right);            
+        }
+
+        .selector-N {
+            @include button($button-width, $button-width, #0174DF, white, right);
+        }        
+    }    
 }
 
 .loader {
@@ -23,11 +143,10 @@ body {
     background: url('../img/ajax-loader.gif') no-repeat;
     cursor: wait;
 }
-.sudoku {
+
+.container {
     display: none;
-    margin: 0;
-    width: 320px;
-    /* font-size: 1em; */
+    width: $width;
     transition: width 2s;
     -moz-transition: width 2s, -moz-transform 2s;
     /* Firefox 4 */
@@ -39,8 +158,9 @@ body {
     /* Opera */
 
 }
-.sudoku-solved {
-    width: 320px;
+
+.container-solved {
+    width: $width;
     transform: rotate(360deg);
     -moz-transform: rotate(360deg);
     /* Firefox 4 */
@@ -53,109 +173,31 @@ body {
 
 }
 
-.header {
-    padding: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-  
-    .right {
-        float: right;
 
-        .errors {
-            color: red;
-            font-size: $font-size-small;
-            margin-right: 20px;    
-        }
-        
-        .clock {
-            text-align: right;
-            font-size: $font-size-small;
-        }
-
-        .help {
-            @extend .btn, .btn-success;
-        }
-
-        .new {
-            @extend .btn, .btn-warning;    
-        }
-    }
-}
-
-
-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid black;
-}
-
-td {
-    margin: 0;
-    border: 1px solid black;
-    padding: 0;
-    text-align: center;
-}
-
-.number .toogle {
-    @extend .btn-default;
-    display: table-cell;
-    width: 30px;
-    height: 30px;
-    padding: 1px;
-}
-
-.notes-toggle {
-    @extend .btn-warning;
-}
-
-.selected-number {
-    @extend .btn-info;
-}
-
-.square {
-    @extend .btn-default;
-    display: table-cell;
-    width: 30px;
-    height: 30px;
-    padding: 1px;
-
-    line-height: 0.9em;
-}
-
-.error {
-    @extend .btn-danger;
-}
-
-.notes {
-    font-size: $font-size-small;
-    font-weight: bold;
-    line-height: 0.9em;
-}
 
 /* For 321px or more */
-@media screen and (min-width: 500px) {
-    body {
-        margin: 50px;
-        padding: 0;
-        font-size: $font-size-wide;        
-    }
-    .sudoku {
-        margin: 20px auto;
-        width: 460px;
-    }
-    .square {
-        width: 45px;
-        height: 45px;
-        padding: 1px;
-    }
-    .number {
-        width: 45px;
-        height: 45px;
-        padding: 1px;
-    }    
-}
+/* @media screen and (min-width: 500px) { */
+/*     body { */
+/*         margin: 50px; */
+/*         padding: 0; */
+/*         font-size: $font-size-wide;         */
+/*     } */
+/*     .sudoku { */
+/*         margin: 20px auto; */
+/*         width: 460px; */
+/*     } */
+/*     .square { */
+/*         width: 45px; */
+/*         height: 45px; */
+/*         padding: 1px; */
+/*     } */
+/*     .number { */
+/*         width: 45px; */
+/*         height: 45px; */
+/*         padding: 1px; */
+/*     }     */
+/* } */
 /* iPhone 4 ----------- */
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
-    
-}
+/* @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) { */
+
+/* } */

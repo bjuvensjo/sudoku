@@ -1,5 +1,5 @@
 {
-    "name": "rtm-sudoku",
+    "name": "sudoku",
     "version": "1.0.0",
     "main": "app/index.html",
     "ignore": [
@@ -8,6 +8,6 @@
         "**/*.txt"
     ],
     "devDependencies": {
-        "bootstrap-sass": "~3.3.3"
+
     }
 }

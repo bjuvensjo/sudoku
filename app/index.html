@@ -11,237 +11,123 @@
     <title>sudoku</title>
   </head>
   <body>
-    <div class="sudoku">
-      <div class="header">
-        <span class="brand">Sudoku</span>
-        <span class="right"> 
-	  <span class="errors"></span>
-	  <span class="clock"></span>
-	  <a class="help" href="#">Help</a>
-	  <a class="new" href="#">New</a>
-        </span>                  
+
+    <div class="container">
+      
+      <div class="menu">
+        <ul>
+          <li class="brand">Sudoku</li>
+          <li class="errors">3</li>
+          <li class="clock">12:34:56</li>
+          <li class="help">Help</li>
+          <li class="new">New</li>
+        </ul>
       </div>
-      <div class="game">
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="0">&nbsp;</td>
-                      <td class="square" id="1">&nbsp;</td>
-                      <td class="square" id="2">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="9">&nbsp;</td>
-                      <td class="square" id="10">&nbsp;</td>
-                      <td class="square" id="11">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="18">&nbsp;</td>
-                      <td class="square" id="19">&nbsp;</td>
-                      <td class="square" id="20">&nbsp</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="3">&nbsp;</td>
-                      <td class="square" id="4">&nbsp;</td>
-                      <td class="square" id="5">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="12">&nbsp;</td>
-                      <td class="square" id="13">&nbsp;</td>
-                      <td class="square" id="14">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="21">&nbsp;</td>
-                      <td class="square" id="22">&nbsp;</td>
-                      <td class="square" id="23">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="6">&nbsp;</td>
-                      <td class="square" id="7">&nbsp;</td>
-                      <td class="square" id="8">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="15">&nbsp;</td>
-                      <td class="square" id="16">&nbsp</td>
-                      <td class="square" id="17">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="24">&nbsp;</td>
-                      <td class="square" id="25">&nbsp;</td>
-                      <td class="square" id="26">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="27">&nbsp;</td>
-                      <td class="square" id="28">&nbsp;</td>
-                      <td class="square" id="29">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="36">&nbsp;</td>
-                      <td class="square" id="37">&nbsp;</td>
-                      <td class="square" id="38">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="45">&nbsp;</td>
-                      <td class="square" id="46">&nbsp;</td>
-                      <td class="square" id="47">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="30">&nbsp;</td>
-                      <td class="square" id="31">&nbsp;</td>
-                      <td class="square" id="32">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="39">&nbsp;</td>
-                      <td class="square" id="40">&nbsp;</td>
-                      <td class="square" id="41">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="48">&nbsp</td>
-                      <td class="square" id="49">&nbsp;</td>
-                      <td class="square" id="50">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="33">&nbsp;</td>
-                      <td class="square" id="34">&nbsp;</td>
-                      <td class="square" id="35">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="42">&nbsp</td>
-                      <td class="square" id="43">&nbsp;</td>
-                      <td class="square" id="44">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="51">&nbsp;</td>
-                      <td class="square" id="52">&nbsp;</td>
-                      <td class="square" id="53">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="54">&nbsp;</td>
-                      <td class="square" id="55">&nbsp;</td>
-                      <td class="square" id="56">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="63">&nbsp;</td>
-                      <td class="square" id="64">&nbsp;</td>
-                      <td class="square" id="65">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="72">&nbsp;</td>
-                      <td class="square" id="73">&nbsp;</td>
-                      <td class="square" id="74">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="57">&nbsp;</td>
-                      <td class="square" id="58">&nbsp;</td>
-                      <td class="square" id="59">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="66">&nbsp;</td>
-                      <td class="square" id="67">&nbsp;</td>
-                      <td class="square" id="68">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="75">&nbsp;</td>
-                      <td class="square" id="76">&nbsp</td>
-                      <td class="square" id="77">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-              <td>
-                <table class="box">
-                  <tbody>
-                    <tr>
-                      <td class="square" id="60">&nbsp;</td>
-                      <td class="square" id="61">&nbsp;</td>
-                      <td class="square" id="62">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="69">&nbsp;</td>
-                      <td class="square" id="70">&nbsp;</td>
-                      <td class="square" id="71">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td class="square" id="78">&nbsp;</td>
-                      <td class="square" id="79">&nbsp;</td>
-                      <td class="square" id="80">&nbsp;</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-        </table>        
+      
+      <div class="sudoku">
+        <ul>
+          <li id="0" class="square"></li>
+          <li id="1" class="square"></li>
+          <li id="2" class="square"></li>
+          <li id="3" class="square"></li>
+          <li id="4" class="square"></li>
+          <li id="5" class="square"></li>
+          <li id="6" class="square"></li>
+          <li id="7" class="square"></li>
+          <li id="8" class="square"></li>
+          <li id="9" class="square"></li>
+          <li id="10" class="square"></li>
+          <li id="11" class="square"></li>
+          <li id="12" class="square"></li>
+          <li id="13" class="square"></li>
+          <li id="14" class="square"></li>
+          <li id="15" class="square"></li>
+          <li id="16" class="square"></li>
+          <li id="17" class="square"></li>
+          <li id="18" class="square"></li>
+          <li id="19" class="square"></li>
+          <li id="20" class="square"></li>
+          <li id="21" class="square"></li>
+          <li id="22" class="square"></li>
+          <li id="23" class="square"></li>
+          <li id="24" class="square"></li>
+          <li id="25" class="square"></li>
+          <li id="26" class="square"></li>
+          <li id="27" class="square"></li>
+          <li id="28" class="square"></li>
+          <li id="29" class="square"></li>
+          <li id="30" class="square"></li>
+          <li id="31" class="square"></li>
+          <li id="32" class="square"></li>
+          <li id="33" class="square"></li>
+          <li id="34" class="square"></li>
+          <li id="35" class="square"></li>
+          <li id="36" class="square"></li>
+          <li id="37" class="square"></li>
+          <li id="38" class="square"></li>
+          <li id="39" class="square"></li>
+          <li id="40" class="square"></li>
+          <li id="41" class="square"></li>
+          <li id="42" class="square"></li>
+          <li id="43" class="square"></li>
+          <li id="44" class="square"></li>
+          <li id="45" class="square"></li>
+          <li id="46" class="square"></li>
+          <li id="47" class="square"></li>
+          <li id="48" class="square"></li>
+          <li id="49" class="square"></li>
+          <li id="50" class="square"></li>
+          <li id="51" class="square"></li>
+          <li id="52" class="square"></li>
+          <li id="53" class="square"></li>
+          <li id="54" class="square"></li>
+          <li id="55" class="square"></li>
+          <li id="56" class="square"></li>
+          <li id="57" class="square"></li>
+          <li id="58" class="square"></li>
+          <li id="59" class="square"></li>
+          <li id="60" class="square"></li>
+          <li id="61" class="square"></li>
+          <li id="62" class="square"></li>
+          <li id="63" class="square"></li>
+          <li id="64" class="square"></li>
+          <li id="65" class="square"></li>
+          <li id="66" class="square"></li>
+          <li id="67" class="square"></li>
+          <li id="68" class="square"></li>
+          <li id="69" class="square"></li>
+          <li id="70" class="square"></li>
+          <li id="71" class="square"></li>
+          <li id="72" class="square"></li>
+          <li id="73" class="square"></li>
+          <li id="74" class="square"></li>
+          <li id="75" class="square"></li>
+          <li id="76" class="square"></li>
+          <li id="77" class="square"></li>
+          <li id="78" class="square"></li>
+          <li id="79" class="square"></li>
+          <li id="80" class="square"></li>
+        </ul>        
       </div>
-      <div class="footer">
-        <table>
-          <tbody>
-            <tr>
-              <td class="number">1</td>
-              <td class="number">2</td>
-              <td class="number">3</td>
-              <td class="number">4</td>
-              <td class="number">5</td>
-              <td class="number">6</td>
-              <td class="number">7</td>
-              <td class="number">8</td>
-              <td class="number">9</td>
-              <td class="toggle">V</td>
-            </tr>
-          </tbody>
-        </table>        
+      <div class="controllers">
+        <ul>
+          <li class="number">1</li>
+          <li class="number">2</li>
+          <li class="number">3</li>
+          <li class="number">4</li>
+          <li class="number">5</li>
+          <li class="number">6</li>
+          <li class="number">7</li>
+          <li class="number">8</li>
+          <li class="number">9</li>
+          <li class="selector-V">V</li>
+        </ul>
       </div>
+
       <div class="loader"></div>
-    </div>    
-    <script src="app.min.js"></script>
+
+    </div>
+    
+    <script src="app.js"></script>
   </body>
 </html>

@@ -3,16 +3,17 @@ module.exports = (function () {
 
     var selectNumber = function () {
         if (numbers.$selectedNumber) {
-            numbers.$selectedNumber.removeClass('selected-number');
+            numbers.$selectedNumber.toggleClass('selected-number');
         }
         numbers.$selectedNumber = $(this);
         numbers.selectedNumber = parseInt(numbers.$selectedNumber.html());
-        numbers.$selectedNumber.addClass('selected-number');
+        numbers.$selectedNumber.toggleClass('selected-number');
     };
 
     var toggleNumberNotes = function () {
         numbers.notes = !numbers.notes;
-        $(this).toggleClass('notes-toggle');
+        $(this).toggleClass('selector-N');
+        $(this).toggleClass('selector-V');
         $(this).html(numbers.notes ? 'N' : 'V');
     };
 
@@ -22,7 +23,7 @@ module.exports = (function () {
         selectedNumber: null,
         initialize: function () {
             $('.number').click(selectNumber);
-            $('.toggle').click(toggleNumberNotes);            
+            $('.selector-V').click(toggleNumberNotes);            
         }
     };
         

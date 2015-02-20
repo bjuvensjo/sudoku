@@ -8,49 +8,49 @@ module.exports = (function () {
     var clockInterval = null, formatNotes, methods, writeNumber;
     
     formatNotes = function (set) {
-        var formatedNotes, i, sortedArray;
-        formatedNotes = '';
-        if (set) {
-            sortedArray = set.asArray().sort();
-            for (i = 0; i < sortedArray.length; i++) {
-                if (i > 0) {
-                    formatedNotes += ' ';
-                }
-                formatedNotes += sortedArray[i];
+        var $ul, $li, i, n, sortedArray, value;
+        sortedArray = set ? set.asArray().sort() : [];
+        $ul = $('<ul class="notes"></ul>');
+        i = 0;
+        for (n = 1; n < 10; n++) {
+            value = '&nbsp;';
+            if (n === sortedArray[i]) {
+                value = n;
+                i++;
             }
-        } else {
-            formatedNotes += '&nbsp;';
+            $li = $('<li class="note">' + value + '</li>');
+            $ul.append($li);
         }
-        return formatedNotes;
+        return $ul;
     };
     
-    writeNumber = function ($game) {
-        var $this = $(this), $modelIndex, i, modelIndex, modelIndexes, set;
+    writeNumber = function ($sudoku) {
+        var $this = $(this), $modelIndex, i, modelIndex, modelIndexes, modelIndexNotes, set, sudoku, value;
         if (numbers.$selectedNumber) {
             modelIndex = parseInt($this.attr('id'));
             if (numbers.notes) {
-                if (!($this.hasClass('notes'))) {
-                    $this.addClass('notes');
-                }
                 set = view.model.updateNote(modelIndex, numbers.selectedNumber);
                 view.model.save();
-                $this.html(formatNotes(set));
+                $this.empty().append(formatNotes(set));
             } else {
                 if (view.model.updateSudoku(modelIndex, numbers.selectedNumber)) {
                     $this.off('click');
-                    $this.removeClass('notes');
-                    $this.html(numbers.selectedNumber);
                     modelIndexes = view.model.removeNotes(modelIndex, numbers.selectedNumber);
                     view.model.save();
+                    sudoku = view.model.getSudoku();
                     for (i = 0; i < modelIndexes.length; i++) {
+                        value = sudoku[modelIndexes[i]];
                         $modelIndex = $('#' + modelIndexes[i]);
-                        if ($modelIndex.hasClass('notes')) {
-                            $modelIndex.html(formatNotes(view.model.getNotes()[modelIndexes[i]]));
+                        if (value === 0 && $modelIndex.find('.notes')) {
+                            modelIndexNotes = view.model.getNotes()[modelIndexes[i]];
+                            $modelIndex.empty().append(formatNotes(modelIndexNotes));
                         }
                     }
+                    $this.empty();
+                    $this.html(numbers.selectedNumber);
                     if (view.model.isSolved()) {
                         view.clock.stop();
-                        $game.addClass('sudoku-solved');
+                        $('.container').addClass('container-solved');
                     }
                 } else {
                     $this.addClass('error');
@@ -73,17 +73,14 @@ module.exports = (function () {
             modelIndex = parseInt($square.attr('id'));
             value = notes[modelIndex];
             if (value) {
-                if (!($square.hasClass('notes'))) {
-                    $square.addClass('notes');
-                }
-                $square.html(formatNotes(value));
+                $square.empty().append(formatNotes(value));
             }
         });
     };
 
     var start = function (createNew) {
-        var $game, $square, modelIndex, notes, squareNotes, sudoku, value;
-        $game = $('.game');
+        var $sudoku, $square, modelIndex, notes, squareNotes, sudoku, value;
+        $sudoku = $('.sudoku');
         // TODO Refactor!
         var updateSudoku = function () {
             sudoku = view.model.getSudoku();
@@ -95,20 +92,21 @@ module.exports = (function () {
                     value = sudoku[modelIndex];
                     $square.off('click');
                     if (value === 0) {
-                        $square.click(function (e) {
-                            writeNumber.call(e.target, $game);
-                        });
+                        $square.on('click', ((function () {
+                            var $that = $square;                            
+                            return function (e) {
+                                writeNumber.call($that, $sudoku);                                
+                            };
+                        })()));
                         squareNotes = notes[modelIndex];
                         if (squareNotes) {
-                            value = formatNotes(squareNotes);
-                            $square.addClass('notes');
+                            $square.empty().append(formatNotes(squareNotes));
                         } else {
-                            value = '&nbsp;';
+                            $square.html('');
                         }
                     } else {
-                        $square.removeClass('notes');
+                        $square.html(value);
                     }
-                    $square.html(value);
                 });
                 view.clock.start(createNew);
                 // TODO Move below to appropriate place...
@@ -142,7 +140,7 @@ module.exports = (function () {
                 }, 1000);
             }
             $('.loader').hide();
-            $game.removeClass('sudoku-solved');
+            $sudoku.removeClass('sudoku-solved');
             $('.errors').html(view.model.getErrors() || '');
         };
         $('.loader').show();
@@ -183,7 +181,7 @@ module.exports = (function () {
             $('.help').click(function () {
                 help();
             });
-            $('.sudoku').show();
+            $('.container').show();
         });
     };
 

@@ -21,3 +21,6 @@
 * Add versioning to saved game
 * Automatically fill in when only one note left in square?
 * Compress images?
+* Replace jQuery with zepto
+* Remove &nbsp;
+* High score

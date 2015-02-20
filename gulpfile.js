@@ -37,7 +37,7 @@ gulp.task('dist', ['build'], function () {
 gulp.task('js', ['test-single', 'jshint'], function() {
     return gulp.src(['app/js/app.js'])
         .pipe(browserify())
-        // .pipe(gulp.dest(buildDir)) // This will output the non minified version
+        .pipe(gulp.dest(buildDir)) // This will output the non minified version
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest(buildDir)); // This will output the minified version

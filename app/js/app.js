@@ -1,6 +1,8 @@
 module.exports = (function () {
     'use strict';    
 
+    var grid = require('./view/grid');
+    
     var model = require('./view/model');
     var view = require('./view/view');
 
