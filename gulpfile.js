@@ -8,6 +8,7 @@ var manifest = require('gulp-manifest');
 var minifyCSS = require('gulp-minify-css');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
+var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var webserver = require('gulp-webserver');
 var zip = require('gulp-zip');
@@ -29,6 +30,10 @@ gulp.task('default', ['build', 'watch'], function() {
 });
 
 gulp.task('dist', ['build'], function () {
+    gulp.src(['app/index.html'])
+        .pipe(replace(/\x3C!-- *(\x3Chtml manifest[^-]+).*/, '$1'))
+        .pipe(gulp.dest(buildDir));
+        
     return gulp.src('build/**/*')
         .pipe(zip('sudoku.war'))
         .pipe(gulp.dest(distDir));
@@ -80,8 +85,7 @@ gulp.task('sass', function() {
         .pipe(compass({
             config_file: './app/sass/config.rb',
             css: './app/sass/stylesheets',
-            sass: './app/sass/sass',
-            import_path: ['./bower_components/bootstrap-sass/assets/stylesheets']
+            sass: './app/sass/sass'
         }))
     //        .pipe(gulp.dest(buildDir)) // This will output the non minified version    
         .pipe(minifyCSS())
