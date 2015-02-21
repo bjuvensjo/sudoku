@@ -3,9 +3,10 @@ $width: 316px;
 //$width: 500px;
 $border-width: 1px;
 $font-size: $width / 9 * 0.55;
+$font-size-menu: $font-size * 0.65;
 
 $color-primary: #2C506E;
-$color-secondar: #747690;
+$color-secondary: #747690;
 $color-light: darken(white, 10%);
 $color-error: #812500;
 
@@ -63,19 +64,19 @@ body {
         }
         .errors {
             @include rectangle($width * 1 / 9, $height);
-            font-size: $font-size * 0.65;
+            font-size: $font-size-menu;
         }
         .clock {
             @include rectangle($width * 3 / 9, $height);
-            font-size: $font-size * 0.65;
+            font-size: $font-size-menu;
         }
         .help {
             @include button($button-width, $height, $button-color, $color-light);
-            font-size: $font-size * 0.65;
+            font-size: $font-size-menu;
         }
         .new {
             @include button($button-width, $height, $button-color, $color-light, right);
-            font-size: $font-size * 0.65;
+            font-size: $font-size-menu;
         }
     }    
 
@@ -105,14 +106,12 @@ body {
         }
         
         .error {
-            $color-error: $color-error;
             background: linear-gradient(lighten($color-error, 20%), darken($color-error, 20%));                
         }
 
     }
 
     .controllers {
-        $button-color: $color-secondar;
         $margin-right: 2px;
         $button-width: ($width - $border-width * 20 - $margin-right * 9) / 10;
 
@@ -121,7 +120,7 @@ body {
         margin-top: $width / 9 - $button-width;
         
         .number {
-            @include button($button-width, $button-width, $button-color);            
+            @include button($button-width, $button-width, $color-secondary);            
             margin-right: $margin-right;
         }
 
@@ -130,7 +129,7 @@ body {
         }
 
         .selector-V {
-            @include button($button-width, $button-width, $button-color, black, right);            
+            @include button($button-width, $button-width, $color-secondary, black, right);            
         }
 
         .selector-N {
