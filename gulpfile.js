@@ -32,10 +32,10 @@ gulp.task('default', ['build', 'watch'], function() {
 gulp.task('dist', ['build'], function () {
     gulp.src(['app/index.html'])
         .pipe(replace(/\x3C!-- *(\x3Chtml manifest[^-]+).*/, '$1'))
-        .pipe(gulp.dest(buildDir));
+        .pipe(gulp.dest(distDir));
         
-    return gulp.src('build/**/*')
-        .pipe(zip('sudoku.war'))
+    return gulp.src(['build/**/*', '!build/index.html'])
+    //     // .pipe(zip('sudoku.war'))
         .pipe(gulp.dest(distDir));
 });
 

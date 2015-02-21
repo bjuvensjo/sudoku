@@ -2,7 +2,12 @@
 $width: 316px;
 //$width: 500px;
 $border-width: 1px;
-$font-size: $width / 9 * 0.45;
+$font-size: $width / 9 * 0.55;
+
+$color-primary: #2C506E;
+$color-secondar: #747690;
+$color-light: darken(white, 10%);
+$color-error: #812500;
 
 // Reset
 body, div, li, ul {
@@ -14,7 +19,7 @@ body, div, li, ul {
 @mixin btn($bg-color, $color: black) {
     background: linear-gradient(lighten($bg-color, 20%), darken($bg-color, 20%));    
     border: solid $border-width  $bg-color;
-    border-radius: 5px;
+    border-radius: 3px;
     color: $color;
 }
 
@@ -35,45 +40,48 @@ body, div, li, ul {
 
 // Styling
 body {
+    background-color: black;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;    
     margin-top: $width / 9;
     margin-left: auto;
     margin-right: auto;
     width: $width;
-    background-color: black;
     
     .menu {
         // $border-width * 3 creates a little space betwen the buttons
         $button-width: $width * 1.5 / 9 - $border-width * 3;
-        $button-color: #0174DF;
+        $button-color: $color-primary;
         $height: $width / 9 * 0.8;
         
+        color: $color-light;
         width: $width;
         height: $width / 9;
         
         .brand {
             @include rectangle($width * 2 / 9, $height);
             text-align: left;
-            color: white;
         }
         .errors {
             @include rectangle($width * 1 / 9, $height);
-            color: white;
+            font-size: $font-size * 0.65;
         }
         .clock {
             @include rectangle($width * 3 / 9, $height);
-            color: white;            
+            font-size: $font-size * 0.65;
         }
         .help {
-            @include button($button-width, $height, $button-color, white);
+            @include button($button-width, $height, $button-color, $color-light);
+            font-size: $font-size * 0.65;
         }
         .new {
-            @include button($button-width, $height, $button-color, white, right);
+            @include button($button-width, $height, $button-color, $color-light, right);
+            font-size: $font-size * 0.65;
         }
     }    
 
     .sudoku {
         // background-image: url("../images/grid.jpg");
-        background-color: white;
+        background-color: $color-light;
         background-size: $width $width;
         width: $width;
         height: $width;
@@ -91,19 +99,20 @@ body {
                 .note {
                     @include rectangle($note-width, note-width);
                     font-size: $note-width;
+                    font-weight: bold;
                 }
             }
         }
         
         .error {
-            $error-color: #FF0040;
-            background: linear-gradient(lighten($error-color, 20%), darken($error-color, 20%));                
+            $color-error: $color-error;
+            background: linear-gradient(lighten($color-error, 20%), darken($color-error, 20%));                
         }
 
     }
 
     .controllers {
-        $button-color: #cede85;
+        $button-color: $color-secondar;
         $margin-right: 2px;
         $button-width: ($width - $border-width * 20 - $margin-right * 9) / 10;
 
@@ -117,7 +126,7 @@ body {
         }
 
         .selected-number {
-            @include button($button-width, $button-width, #0174DF, white);
+            @include button($button-width, $button-width, $color-primary, $color-light);
         }
 
         .selector-V {
@@ -125,7 +134,7 @@ body {
         }
 
         .selector-N {
-            @include button($button-width, $button-width, #0174DF, white, right);
+            @include button($button-width, $button-width, $color-primary, $color-light, right);
         }        
     }    
 }
