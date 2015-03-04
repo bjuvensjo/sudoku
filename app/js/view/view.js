@@ -140,7 +140,7 @@ module.exports = (function () {
                 }, 1000);
             }
             $('.loader').hide();
-            $sudoku.removeClass('sudoku-solved');
+            $('.container').removeClass('container-solved');
             $('.errors').html(view.model.getErrors() || '');
         };
         $('.loader').show();
