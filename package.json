@@ -21,7 +21,6 @@
     "jshint-stylish": "^1.0.0"
   },
   "scripts": {
-    "postinstall": "bower install",
     "prestart": "npm install",
     "start": "gulp default",
     "pretest": "npm install",

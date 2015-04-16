@@ -1,6 +1,5 @@
 var browserify = require('gulp-browserify');
 var compass = require('gulp-compass');
-var concat = require('gulp-concat');  
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
