@@ -7,6 +7,7 @@ var manifest = require('gulp-manifest');
 var minifyCSS = require('gulp-minify-css');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
+var react = require('gulp-react');
 var replace = require('gulp-replace');
 var uglify = require('gulp-uglify');
 var webserver = require('gulp-webserver');
@@ -38,19 +39,19 @@ gulp.task('dist', ['build'], function () {
         .pipe(gulp.dest(distDir));
 });
 
-gulp.task('js', ['test-single', 'jshint'], function() {
-    return gulp.src(['app/js/app.js'])
+gulp.task('js', ['transform', 'test-single', 'jshint'], function() {
+    return gulp.src(['build_src/js/app.js'])
         .pipe(browserify())
-        // .pipe(gulp.dest(buildDir)) // This will output the non minified version
+        .pipe(gulp.dest(buildDir)) // This will output the non minified version
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest(buildDir)); // This will output the minified version
 });
 
 gulp.task('jshint', function() {
-    return gulp.src(['app/js/**/*'])
-        .pipe(jshint())
-        .pipe(jshint.reporter(stylish));
+    // return gulp.src(['app/js/**/*'])
+    //     .pipe(jshint())
+    //     .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('js-worker', ['test-single', 'jshint'], function() {
@@ -99,6 +100,12 @@ gulp.task('test', ['test-single'], function () {
 gulp.task('test-single', function () {
     return gulp.src('app/js/**/*Test.js', {read: false})
         .pipe(mocha({reporter: 'spec'}));
+});
+
+gulp.task('transform', function() {
+    return gulp.src(['app/js/**/*'])    
+        .pipe(react())
+        .pipe(gulp.dest('build_src/js'));
 });
 
 gulp.task('watch', function() {

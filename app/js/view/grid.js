@@ -1,9 +1,7 @@
 module.exports = (function () {
     'use strict';    
 
-    var $ = require('zepto-browserify').$;
-    
-    $(function() {
+    var render = function() {
         var canvas, ctx, delta, dimension, i, x, y;
         
         canvas = document.createElement("canvas");
@@ -30,11 +28,14 @@ module.exports = (function () {
             ctx.lineTo(320, y);
             ctx.stroke();
         }
-        
-        $('.sudoku').css({'background-image':"url(" + canvas.toDataURL("image/grid") + ")" });
-    });
 
-    return;
+        var sudokuElement = document.getElementsByClassName('sudoku')[0];        
+        sudokuElement.style.backgroundImage = "url(" + canvas.toDataURL("image/grid") + ")";
+    };    
+
+    return {
+        render: render
+    };
 }());
 
 

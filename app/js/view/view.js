@@ -1,199 +1,201 @@
 module.exports = (function () {
-    var $ = require('zepto-browserify').$;
-    var clock = require('./clock');
-    var model = require('./model');
-    var numbers = require('./numbers');
+    var React = require('react');
+    var ReactDOM = require('react-dom');
 
-    var view;
-    var clockInterval = null, formatNotes, methods, writeNumber;
-    
-    formatNotes = function (set) {
-        var $ul, $li, i, n, sortedArray, value;
-        sortedArray = set ? set.asArray().sort() : [];
-        $ul = $('<ul class="notes"></ul>');
-        i = 0;
-        for (n = 1; n < 10; n++) {
-            value = '&nbsp;';
-            if (n === sortedArray[i]) {
-                value = n;
-                i++;
-            }
-            $li = $('<li class="note">' + value + '</li>');
-            $ul.append($li);
+    var Brand;
+    var Clock;
+    var Container;
+    var Controls;
+    var Errors;
+    var Help;
+    var Loader;
+    var Menu;
+    var New;
+    var Note;
+    var Notes;
+    var NumberControl;
+    var SelectorControl;
+    var Square;
+    var Sudoku;
+
+    var domElement = document.getElementById("content");
+
+    Brand = React.createClass({
+        render: function() {
+            return (
+                <li className="brand">Sudoku</li>
+            );
         }
-        return $ul;
-    };
+    });
+
+    Errors = React.createClass({
+        render: function() {
+            return (
+                    <li className="errors">{this.props.errors}</li>
+            );
+        }
+    });
     
-    writeNumber = function ($sudoku) {
-        var $this = $(this), $modelIndex, i, modelIndex, modelIndexes, modelIndexNotes, set, sudoku, value;
-        if (numbers.$selectedNumber) {
-            modelIndex = parseInt($this.attr('id'));
-            if (numbers.notes) {
-                set = view.model.updateNote(modelIndex, numbers.selectedNumber);
-                view.model.save();
-                $this.empty().append(formatNotes(set));
+    Clock = React.createClass({        
+        render: function() {
+            var s, time;
+            s = '';
+            time = this.props.clock.getTime();
+            if (time.hours < 10) {
+                s += '0';
+            }
+            s += time.hours;
+            s += ':';
+            if (time.minutes < 10) {
+                s += '0';
+            }
+            s += time.minutes;
+            s += ':';
+            if (time.seconds < 10) {
+                s += '0';
+            }
+            s += time.seconds;
+            
+            return <li className="clock">{s}</li>;
+        }
+    });
+    
+    Help = React.createClass({
+        render: function() {
+            return <li onClick={this.props.onClick} className="help">Help</li>;
+        }
+    });
+
+    New = React.createClass({
+        render: function() {
+            return <li onClick={this.props.onClick} className="new">New</li>;
+        }
+    });    
+    
+    Menu = React.createClass({
+        render: function() {
+            return (
+                <div className="menu">
+                    <ul>
+                    <Brand/>
+                    <Errors errors={this.props.errors}/>
+                    <Clock clock={this.props.clock}/>
+                    <Help onClick={this.props.helpOnClick}/>
+                    <New onClick={this.props.newOnClick}/>
+                    </ul>
+                </div>
+            );
+        }
+    });
+
+    Note = React.createClass({
+        render: function() {
+            return <li className="note">{this.props.note}</li>;
+        }
+    });
+
+    Notes = React.createClass({
+        render: function() {
+            var items = [];
+            for (var i = 1; i < 10; i++) {
+                var note = this.props.notes.contains(i) ? i : "\u00a0";
+                items.push(<Note key={i} note={note}/>);
+            }            
+            return <ul className="notes">{items}</ul>;
+        }
+    });    
+
+    Square = React.createClass({
+        handleClick: function(event) {
+            this.props.onClick(this.props.index);
+        },                
+        render: function() {
+            var className = "square" + (this.props.errorIndex == this.props.index ? " error" : "");
+            if (this.props.value) {
+                return <li className={className}>{this.props.value}</li>;                                
+            }
+            if (this.props.notes) {
+                return <li onClick={this.handleClick} className={className}><Notes notes={this.props.notes}/></li>;                                
+            }
+            return <li onClick={this.handleClick} className={className}>{"\u00a0"}</li>;
+        }
+    });    
+    
+    Sudoku = React.createClass({
+        render: function() {
+            var items = [];
+            for (var i = 0; i < 81; i++) {
+                items.push(<Square key={i} index={i} value={this.props.sudoku[i]} notes={this.props.notes[i]} errorIndex={this.props.errorIndex} onClick={this.props.squareOnClick}/>);
+            }
+            return (
+                    <div className="sudoku">
+                    <ul>{items}</ul>
+                    </div>
+            );
+        }
+    });
+
+    NumberControl = React.createClass({
+        handleClick: function(event) {
+            this.props.onClick(this.props.value);
+        },        
+        render: function() {
+            return <li onClick={this.handleClick} className={"number" + (this.props.selected ? " selected-number" : "")}>{this.props.value}</li>;            
+        }
+    });
+
+    SelectorControl = React.createClass({
+        handleClick: function(event) {
+            this.props.onClick(this.props.selected);
+        },
+        render: function() {
+            return <li onClick={this.handleClick} className={"selector-" + this.props.selected}>{this.props.selected}</li>;
+        }
+    });        
+
+    Controls = React.createClass({
+        render: function() {
+            var items = [];
+            for (var i = 1; i < 10; i++) {
+                items.push(<NumberControl key={i} value={i} selected={this.props.selectedNumber == i} onClick={this.props.numberOnClick}/>);
+            }
+            return (
+                    <div className="controls">
+                    <ul>
+                    {items}
+                    <SelectorControl selected={this.props.selectedSelector} onClick={this.props.selectorOnClick}/>
+                    </ul>
+                    </div>
+            );
+        }
+    });
+
+    Loader = React.createClass({
+        render: function() {
+            if (this.props.load) {
+                return <div className="loader"></div>;
             } else {
-                if (view.model.updateSudoku(modelIndex, numbers.selectedNumber)) {
-                    $this.off('click');
-                    modelIndexes = view.model.removeNotes(modelIndex, numbers.selectedNumber);
-                    view.model.save();
-                    sudoku = view.model.getSudoku();
-                    for (i = 0; i < modelIndexes.length; i++) {
-                        value = sudoku[modelIndexes[i]];
-                        $modelIndex = $('#' + modelIndexes[i]);
-                        if (value === 0 && $modelIndex.find('.notes')) {
-                            modelIndexNotes = view.model.getNotes()[modelIndexes[i]];
-                            $modelIndex.empty().append(formatNotes(modelIndexNotes));
-                        }
-                    }
-                    $this.empty();
-                    $this.html(numbers.selectedNumber);
-                    if (view.model.isSolved()) {
-                        view.clock.stop();
-                        $('.container').addClass('container-solved');
-                    }
-                } else {
-                    $this.addClass('error');
-                    setTimeout(function () {
-                        $this.removeClass('error');
-                    }, 300);
-                }
-                view.model.save();
-                $('.errors').html(view.model.getErrors() || '');
+                return <div></div>;
             }
         }
-    };    
+    });
 
-    var help = function () {
-        var $square, modelIndex, notes, value;
-        notes = view.model.createNotes();
-        view.model.save();
-        $.each($('.square'), function (index, html) {
-            $square = $(html);
-            modelIndex = parseInt($square.attr('id'));
-            value = notes[modelIndex];
-            if (value) {
-                $square.empty().append(formatNotes(value));
-            }
-        });
-    };
-
-    var start = function (createNew) {
-        var $sudoku, $square, modelIndex, notes, squareNotes, sudoku, value;
-        $sudoku = $('.sudoku');
-        // TODO Refactor!
-        var updateSudoku = function () {
-            sudoku = view.model.getSudoku();
-            notes = view.model.getNotes();
-            if (sudoku) {
-                $.each($('.square'), function (index, html) {
-                    $square = $(html);
-                    modelIndex = parseInt($square.attr('id'));
-                    value = sudoku[modelIndex];
-                    $square.off('click');
-                    if (value === 0) {
-                        $square.on('click', ((function () {
-                            var $that = $square;                            
-                            return function (e) {
-                                writeNumber.call($that, $sudoku);                                
-                            };
-                        })()));
-                        squareNotes = notes[modelIndex];
-                        if (squareNotes) {
-                            $square.empty().append(formatNotes(squareNotes));
-                        } else {
-                            $square.html('');
-                        }
-                    } else {
-                        $square.html(value);
-                    }
-                });
-                view.clock.start(createNew);
-                // TODO Move below to appropriate place...
-                if (clockInterval) {
-                    clearInterval(clockInterval);
-                }
-                var updateClock = function () {
-                    var s, time;
-                    s = '';
-                    view.clock.update();
-                    time = view.clock.getTime();
-                    if (time.hours < 10) {
-                        s += '0';
-                    }
-                    s += time.hours;
-                    s += ':';
-                    if (time.minutes < 10) {
-                        s += '0';
-                    }
-                    s += time.minutes;
-                    s += ':';
-                    if (time.seconds < 10) {
-                        s += '0';
-                    }
-                    s += time.seconds;
-                    $('.clock').html(s);
-                };
-                updateClock();
-                clockInterval = setInterval(function () {
-                    updateClock();
-                }, 1000);
-            }
-            $('.loader').hide();
-            $('.container').removeClass('container-solved');
-            $('.errors').html(view.model.getErrors() || '');
-        };
-        $('.loader').show();
-        if (createNew) {
-            if (typeof (Worker) !== "undefined") {
-                var worker = new Worker('initializeWorker.min.js');
-                // receive messages from web worker
-                worker.onmessage = function (e) {
-                    view.model.cells = e.data.cells;
-                    view.model.errors = e.data.errors;
-                    view.model.notes = e.data.notes;
-                    view.model.remaining = e.data.remaining;
-                    view.model.sudoku = e.data.sudoku;
-                    view.model.save();
-                    updateSudoku();
-                };
-                // send message to web worker
-                worker.postMessage('createNew');
-            } else {
-                view.model = model.create();
-                view.model.initialize();
-                view.model.save();
-                updateSudoku();
-            }
-        } else {
-            view.model.load();
-            updateSudoku();
+    Container = React.createClass({
+        render: function() {
+            return (
+                    <div className={"container" + (this.props.model.isSolved() ? " container-solved" : "")}>
+                    <Menu errors={this.props.model.getErrors()} clock={this.props.clock} newOnClick={this.props.newOnClick} helpOnClick={this.props.helpOnClick}/>
+                    <Sudoku sudoku={this.props.model.getSudoku()} notes={this.props.model.getNotes()} errorIndex={this.props.errorIndex} squareOnClick={this.props.squareOnClick}/>
+                    <Controls selectedNumber={this.props.selectedNumber} numberOnClick={this.props.numberOnClick} selectedSelector={this.props.selectedSelector} selectorOnClick={this.props.selectorOnClick}/>
+                    <Loader load={this.props.load}/>
+                    </div>
+            );
         }
-    };    
-    
-    var initialize = function () {        
-        $(function () {
-            numbers.initialize();
-            start(false);
-            $('.new').click(function () {
-                start(true);
-            });
-            $('.help').click(function () {
-                help();
-            });
-            $('.container').show();
-        });
-    };
+    });    
 
     return {
-        create: function (model) {
-            view =  {
-                model: model,
-                clock: clock.create(),
-                initialize: initialize
-            };
-            view.initialize();
-            return;
+        render: function(props) {        
+            ReactDOM.render(<Container {...props}/>, domElement);        
         }
     };
 }());

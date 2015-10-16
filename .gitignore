@@ -5,6 +5,7 @@
 .tern*
 bower_components
 build
+build_src
 dist
 node_modules
 npm-debug.log

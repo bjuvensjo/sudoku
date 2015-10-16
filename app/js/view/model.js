@@ -7,9 +7,7 @@ module.exports = (function () {
 
     var thePersistence = persistence.create();    
     
-    var Model = null;
-    // TODO Use Notes class!!!
-    Model = function () {
+    var Model = function () {
         if (!(this instanceof Model)) {
             return new Model();
         }
@@ -96,7 +94,9 @@ module.exports = (function () {
             }
             this.remaining = model.remaining;
             this.errors = model.errors | 0;
+            return true;
         }
+        return false;
     };
 
     Model.prototype.save = function () {

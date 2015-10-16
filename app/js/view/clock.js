@@ -8,8 +8,38 @@ module.exports = (function () {
             var time = 0;
             var thePersistence = persistence.create();
 
+            var update = function () {
+                var now;
+                if (!stopped) {
+                    now = new Date();
+                    time += now.getTime() - lastUpdate.getTime();
+                    lastUpdate = now;
+                    save();
+                }
+            };
+
+            var save = function () {
+                var modelString = JSON.stringify({
+                    stopped: stopped,
+                    time: time
+                });
+                thePersistence.putString('clock', modelString);
+            };
+
+            
+            var load = function () {
+                var model, modelString;
+                modelString = thePersistence.getString('clock');
+                if (modelString) {
+                    model = JSON.parse(modelString);
+                    stopped = model.stopped;
+                    time = model.time;
+                }
+            };            
+            
             return {
                 getTime: function () {
+                    update();
                     var hours, minutes, seconds, tmp;
                     tmp = Math.round(time / 1e3);
                     hours = Math.floor(tmp / 3600);
@@ -22,44 +52,19 @@ module.exports = (function () {
                         seconds : seconds
                     };
                 },
-                load: function () {
-                    var model, modelString;
-                    modelString = thePersistence.getString('clock');
-                    if (modelString) {
-                        model = JSON.parse(modelString);
-                        stopped = model.stopped;
-                        time = model.time;
-                    }
-                },
-                save: function () {
-                    var modelString = JSON.stringify({
-                        stopped: stopped,
-                        time: time
-                    });
-                    thePersistence.putString('clock', modelString);
-                },
-                start: function (createNew) {
+                start: function (reset) {
                     lastUpdate = new Date();
-                    if (createNew) {
+                    if (reset) {
                         stopped = false;
                         time = 0;
-                        this.save();
+                        save();
                     } else {
-                        this.load();
+                        load();
                     }
                 },
                 stop: function () {
                     stopped = true;
-                    this.save();
-                },
-                update: function () {
-                    var now;
-                    if (!stopped) {
-                        now = new Date();
-                        time += now.getTime() - lastUpdate.getTime();
-                        lastUpdate = now;
-                        this.save();
-                    }
+                    save();
                 }
             };
         }
