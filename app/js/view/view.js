@@ -22,17 +22,13 @@ module.exports = (function () {
 
     Brand = React.createClass({
         render: function() {
-            return (
-                <li className="brand">Sudoku</li>
-            );
+            return <li className="brand">Sudoku</li>;
         }
     });
 
     Errors = React.createClass({
         render: function() {
-            return (
-                    <li className="errors">{this.props.errors}</li>
-            );
+            return <li className="errors">{this.props.errors}</li>;
         }
     });
     
@@ -132,6 +128,32 @@ module.exports = (function () {
                     <ul>{items}</ul>
                     </div>
             );
+        },
+        componentDidMount: function() {
+            var canvas, ctx, delta, dimension, i, x, y;
+            dimension = 320;
+            canvas = document.createElement("canvas");            
+            canvas.width = dimension;
+            canvas.height = dimension;
+            ctx = canvas.getContext("2d");
+            delta = dimension / 9.0;
+            for (i = 0; i < 10; i++) {
+                ctx.lineWidth = (i === 3 || i === 6) ? 3 : 1;
+
+                x = delta * i;
+                y = delta * i;
+                
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, 320);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(320, y);
+                ctx.stroke();
+            }
+            ReactDOM.findDOMNode(this).style.backgroundImage = "url(" + canvas.toDataURL("image/grid") + ")";            
         }
     });
 
@@ -194,7 +216,7 @@ module.exports = (function () {
     });    
 
     return {
-        render: function(props) {        
+        render: function(props) {
             ReactDOM.render(<Container {...props}/>, domElement);        
         }
     };

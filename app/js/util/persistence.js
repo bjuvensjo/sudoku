@@ -1,5 +1,5 @@
 module.exports = (function () {
-    var getInt, getIntArray, getString, i, putInt, putIntArray, putString, storageValue, tmp, value = null;
+    var get, getInt, getIntArray, getString, i, put, putInt, putIntArray, putString, storageValue, tmp, value = null;
 
     get = function (key) {
         if (typeof (Storage) !== "undefined") {

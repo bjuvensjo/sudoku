@@ -1,27 +1,87 @@
-var browserify = require('gulp-browserify');
+var browserify = require('browserify');
 var compass = require('gulp-compass');
 var gulp = require('gulp');
-var jshint = require('gulp-jshint');
-var stylish = require('jshint-stylish');
-var manifest = require('gulp-manifest');
-var minifyCSS = require('gulp-minify-css');
-var mocha = require('gulp-mocha');
-var rename = require('gulp-rename');
-var react = require('gulp-react');
-var replace = require('gulp-replace');
+var gulpif = require('gulp-if');
+var notify = require('gulp-notify');
+var reactify = require('reactify');
+var babelify = require('babelify');
+var source = require('vinyl-source-stream');
+var streamify = require('gulp-streamify');
 var uglify = require('gulp-uglify');
+var watchify = require('watchify');
 var webserver = require('gulp-webserver');
-var zip = require('gulp-zip');
 
-var buildDir = 'build';
-var distDir = 'dist';
+// The task that handles both development and deployment
+var runBrowserifyTask = function (options) {
 
-gulp.task('build', ['manifest'], function() {
+    // We create one bundle for our dependencies,
+    // which in this case is only react
+    var vendorBundler = browserify({
+	debug: true // We also add sourcemapping
+    }).require('react')
+            .require('react-dom');
+
+    // This bundle is for our application
+    var bundler = browserify({
+        debug: true, // Need that sourcemapping
+
+        // These options are just for Watchify
+        cache: {}, packageCache: {}, fullPaths: true
+    }).require(require.resolve('./app/js/app.js'), { entry: true })
+            // .transform(reactify) // Transform JSX 
+            .transform(babelify) // Transform JSX 
+            .external('react') // Do not include react
+            .external('react-dom'); // Do not include react-dom
+
+    // The actual rebundle process
+    var rebundle = function() {
+        var start = Date.now();
+        bundler.bundle()
+            .pipe(source('app.js'))
+            .pipe(gulpif(options.uglify, streamify(uglify())))
+            .pipe(gulp.dest(options.dest))
+            .pipe(notify(function () {
+        	console.log('Built in ' + (Date.now() - start) + 'ms');
+            }));
+    };
+
+    // Fire up Watchify when developing
+    if (options.watch) {
+        bundler = watchify(bundler);
+        bundler.on('update', rebundle);
+    }
+
+    // Run the vendor bundle when the default Gulp task starts
+    vendorBundler.bundle()
+	.pipe(source('vendors.js'))
+	.pipe(streamify(uglify()))
+	.pipe(gulp.dest(options.dest));
+
+    return rebundle();
+};
+
+gulp.task('default', function () {
+
+    runBrowserifyTask({
+	watch: true,
+	dest: 'build/',
+	uglify: false
+    });
 
 });
 
-gulp.task('default', ['build', 'watch'], function() {
-    gulp.src(buildDir)
+gulp.task('deploy', function () {
+
+    runBrowserifyTask({
+	watch: false,
+	dest: 'dist/',
+	uglify: true
+    });
+
+});
+
+gulp.task('server', ['resources', 'sass'], function() {
+    gulp.src('build/')
         .pipe(webserver({
             host: '0.0.0.0',
             livereload: true,
@@ -29,55 +89,9 @@ gulp.task('default', ['build', 'watch'], function() {
         }));
 });
 
-gulp.task('dist', ['build'], function () {
-    gulp.src(['app/index.html'])
-        .pipe(replace(/\x3C!-- *(\x3Chtml manifest[^-]+).*/, '$1'))
-        .pipe(gulp.dest(distDir));
-        
-    return gulp.src(['build/**/*', '!build/index.html'])
-    //     // .pipe(zip('sudoku.war'))
-        .pipe(gulp.dest(distDir));
-});
-
-gulp.task('js', ['transform', 'test-single', 'jshint'], function() {
-    return gulp.src(['build_src/js/app.js'])
-        .pipe(browserify())
-        .pipe(gulp.dest(buildDir)) // This will output the non minified version
-        .pipe(uglify())
-        .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest(buildDir)); // This will output the minified version
-});
-
-gulp.task('jshint', function() {
-    // return gulp.src(['app/js/**/*'])
-    //     .pipe(jshint())
-    //     .pipe(jshint.reporter(stylish));
-});
-
-gulp.task('js-worker', ['test-single', 'jshint'], function() {
-    return gulp.src(['app/js/initializeWorker.js'])
-        .pipe(browserify())
-        // .pipe(gulp.dest(buildDir)) // This will output the non minified version
-        .pipe(uglify())
-        .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest(buildDir)); // This will output the minified version    
-});
-
-gulp.task('manifest', ['js', 'js-worker', 'resources', 'sass'], function() {
-    return gulp.src(['build/**/*'])
-        .pipe(manifest({
-            hash: true,
-            preferOnline: true,
-            network: ['http://*', 'https://*', '*'],
-            filename: 'app.manifest',
-            exclude: ['app.manifest', 'WEB-INF/appengine-web.xml', 'WEB-INF/web.xml']
-        }))
-        .pipe(gulp.dest(buildDir));    
-});
-
 gulp.task('resources', function() {
     return gulp.src(['app/img/*', 'app/favicon.ico', 'app/index.html', 'app/WEB-INF/*'], {base: "app"})
-        .pipe(gulp.dest(buildDir));
+        .pipe(gulp.dest('build/'));
 });
 
 gulp.task('sass', function() {
@@ -87,27 +101,8 @@ gulp.task('sass', function() {
             css: './app/sass/stylesheets',
             sass: './app/sass/sass'
         }))
-    //        .pipe(gulp.dest(buildDir)) // This will output the non minified version    
-        .pipe(minifyCSS())
-        .pipe(rename({ extname: '.min.css' }))
-        .pipe(gulp.dest(buildDir)); // This will output the minified version
-});
-
-gulp.task('test', ['test-single'], function () {    
-    gulp.watch('app/js/**', ['test-single']);
-});
-
-gulp.task('test-single', function () {
-    return gulp.src('app/js/**/*Test.js', {read: false})
-        .pipe(mocha({reporter: 'spec'}));
-});
-
-gulp.task('transform', function() {
-    return gulp.src(['app/js/**/*'])    
-        .pipe(react())
-        .pipe(gulp.dest('build_src/js'));
-});
-
-gulp.task('watch', function() {
-    gulp.watch('app/**/*', ['build']);
+        .pipe(gulp.dest('build/')); // This will output the non minified version    
+        // .pipe(minifyCSS())
+        // .pipe(rename({ extname: '.min.css' }))
+        // .pipe(gulp.dest(buildDir)); // This will output the minified version
 });

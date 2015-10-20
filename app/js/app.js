@@ -2,7 +2,6 @@ module.exports = (function () {
     'use strict';    
     
     var clock = require('./view/clock');
-    var grid = require('./view/grid');    
     var model = require('./view/model');    
     var view = require('./view/view');
     var clockInterval;
@@ -37,26 +36,10 @@ module.exports = (function () {
     props.newOnClick = function() {
         props.load = true;
         view.render(props);
-        if (typeof (Worker) !== "undefined") {
-            var worker = new Worker('initializeWorker.min.js');
-            // receive messages from web worker
-            worker.onmessage = function (e) {
-                props.model.cells = e.data.cells;
-                props.model.errors = e.data.errors;
-                props.model.notes = e.data.notes;
-                props.model.remaining = e.data.remaining;
-                props.model.sudoku = e.data.sudoku;
-                props.model.save();
-                updateSudoku(true);
-            };
-            // send message to web worker
-            worker.postMessage('createNew');
-        } else {
-            props.model = model.create();
-            props.model.initialize();
-            props.model.save();
-            updateSudoku(true);
-        }
+        props.model = model.create();
+        props.model.initialize();
+        props.model.save();
+        updateSudoku(true);
     };    
 
     props.numberOnClick = function(number) {
@@ -96,7 +79,6 @@ module.exports = (function () {
     } else {
         props.newOnClick();
     }
-    grid.render();
 
     return;
 }());
