@@ -1,8 +1,8 @@
 module.exports = (function () {
     'use strict';    
     
-    var clock = require('./view/clock');
-    var model = require('./view/model');    
+    var clock = require('./model/clock');
+    var model = require('./model/model');    
     var view = require('./view/view');
     var clockInterval;
     
