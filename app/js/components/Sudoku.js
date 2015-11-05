@@ -1,7 +1,8 @@
 module.exports = (function () {
     var React = require('react');
     var ReactDOM = require('react-dom');    
-
+    var SudokuActions = require('../actions/SudokuActions');
+    
     var Note = React.createClass({
         render: function() {
             return <li className="note">{this.props.note}</li>;
@@ -21,7 +22,7 @@ module.exports = (function () {
 
     var Square = React.createClass({
         handleClick: function(event) {
-            this.props.onClick(this.props.index);
+            SudokuActions.square(this.props.index);
         },                
         render: function() {
             var className = "square" + (this.props.errorIndex == this.props.index ? " error" : "");
@@ -39,7 +40,7 @@ module.exports = (function () {
         render: function() {
             var items = [];
             for (var i = 0; i < 81; i++) {
-                items.push(<Square key={i} index={i} value={this.props.sudoku[i]} notes={this.props.notes[i]} errorIndex={this.props.errorIndex} onClick={this.props.squareOnClick}/>);
+                items.push(<Square key={i} index={i} value={this.props.sudoku[i]} notes={this.props.notes[i]} errorIndex={this.props.errorIndex}/>);
             }
             return (
                     <div className="sudoku">

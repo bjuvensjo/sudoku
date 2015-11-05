@@ -1,6 +1,7 @@
 module.exports = (function () {
     var React = require('react');
-
+    var SudokuActions = require('../actions/SudokuActions');
+    
     var Brand = React.createClass({
         render: function() {
             return <li className="brand">Sudoku</li>;
@@ -39,13 +40,13 @@ module.exports = (function () {
     
     var Help = React.createClass({
         render: function() {
-            return <li onClick={this.props.onClick} className="help">Help</li>;
+            return <li onClick={SudokuActions.help} className="help">Help</li>;
         }
     });
 
     var New = React.createClass({
         render: function() {
-            return <li onClick={this.props.onClick} className="new">New</li>;
+            return <li onClick={SudokuActions.create} className="new">New</li>;
         }
     });    
     
@@ -57,8 +58,8 @@ module.exports = (function () {
                     <Brand/>
                     <Errors errors={this.props.errors}/>
                     <Clock clock={this.props.clock}/>
-                    <Help onClick={this.props.helpOnClick}/>
-                    <New onClick={this.props.newOnClick}/>
+                    <Help/>
+                    <New/>
                     </ul>
                     </div>
             );
